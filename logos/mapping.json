@@ -1,0 +1,29 @@
+{
+  "models": {},
+  "families": {
+    "claude": "claude",
+    "gpt": "openai",
+    "deepseek": "deepseek",
+    "qwen": "qwen",
+    "flux": "flux",
+    "gemini": "gemini",
+    "llama": "meta"
+  },
+  "developers": {
+    "openai": "openai",
+    "anthropic": "anthropic",
+    "deepseek": "deepseek",
+    "google": "google",
+    "meta": "meta",
+    "alibaba": "qwen",
+    "black-forest-labs": "flux",
+    "mistral": "mistral",
+    "moonshotai": "moonshot",
+    "minimax": "minimax",
+    "xai": "xai",
+    "zhipuai": "zai",
+    "cohere": "cohere",
+    "nvidia": "nvidia",
+    "stabilityai": "stability"
+  }
+}

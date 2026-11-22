@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "overrides": {},
+  "default": { "author": "LMSpeed", "license": "MIT" },
+  "dependency": {
+    "package": "@lobehub/icons-static-svg",
+    "license": "MIT",
+    "versionSource": "pnpm-lock.yaml",
+    "repository": "https://github.com/lobehub/lobe-icons"
+  }
+}

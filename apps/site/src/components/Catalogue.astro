@@ -1,0 +1,49 @@
+---
+import '@fontsource-variable/noto-sans';
+import { snapshot } from '@lmspeed/models-publish';
+import {
+  catalogueRows,
+  type Locale,
+  localePath,
+  messages,
+  parameters,
+  searchText,
+  tokens,
+} from '../lib/catalogue';
+import '../styles/catalogue.css';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = 'en' } = Astro.props;
+const t = messages[locale];
+const label = (key: string) => (t as Record<string, string>)[key] ?? key;
+const models = catalogueRows(snapshot.data.models);
+const tasks = [...new Set(models.flatMap((model) => model.tasks))].sort();
+const developers = Object.values(snapshot.data.developers).sort((a, b) =>
+  a.name.localeCompare(b.name, 'en'),
+);
+const canonical = `https://models.lmspeed.net${localePath(locale)}`;
+const flag = (value: boolean | null | undefined) =>
+  value == null ? '—' : value ? t.yes : t.no;
+const snippets = {
+  HTTP: 'curl https://models.lmspeed.net/v1/api.json',
+  'JavaScript / TypeScript':
+    "import { Client } from '@lmspeed/models';\nconst catalog = await new Client().refresh();\nconst model = catalog.get('gpt-5');",
+  Python:
+    "from lmspeed_models import Client\ncatalog = Client().refresh()\nmodel = catalog.get('gpt-5')",
+  Rust: 'let mut client = lmspeed_models::Client::default();\nlet catalog = client.refresh().await?;\nlet model = catalog.get("gpt-5", None)?;',
+  Go: 'client := models.NewClient("")\ncatalog, err := client.Refresh(ctx)\nmodel, err := catalog.Get("gpt-5", "")',
+};
+---
+<!doctype html><html lang={locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/><title>{t.title} · LMSpeed</title><meta name="description" content={t.description}/><link rel="icon" href="/logo.png"/><link rel="canonical" href={canonical}/><link rel="alternate" type="text/markdown" href={`${canonical}index.md`}/>{(['en','zh','ru']as const).map(language=><link rel="alternate" hreflang={language} href={`https://models.lmspeed.net${localePath(language)}`}/>)}</head><body>
+<a class="skip" href="#models">Skip to models</a>
+<header class="site-header"><div class="header-inner"><a class="brand" href={localePath(locale)} aria-label="LMSpeed Models"><img src="/logo.png" alt="" width="32" height="32"/><span>LMSpeed</span><span class="brand-section">Models</span></a><nav aria-label="Main navigation"><a class="nav-active" href="#models" aria-current="page">{t.models}</a><a href="#get-started">{t.docs}</a><a href="/coverage/models-dev.json">{t.coverage}</a></nav><div class="header-actions"><label class="language"><span class="sr-only">{t.language}</span><select id="language" aria-label={t.language}>{(['en','zh','ru']as const).map(language=><option value={localePath(language)} selected={locale===language}>{{en:'EN',zh:'简中',ru:'RU'}[language]}</option>)}</select></label><button type="button" id="theme" class="icon-button" aria-label={t.theme}>◐</button><a class="github-link" href="https://github.com/LMSpeed/models">GitHub ↗</a></div></div></header>
+<main><section class="page-heading"><div><div class="eyebrow">LMSpeed / OPEN DATA</div><h1>{t.title}</h1><p>{t.description}</p></div><a class="primary-button" href="/v1/api.json" download="lmspeed-models.json">↓ {t.download}</a></section>
+<div class="data-meta"><span class="revision-dot"></span><span>{snapshot.counts.models.toLocaleString(locale)} {t.showing}</span><span class="meta-separator">/</span><span>{snapshot.counts.developers} {t.developer}</span><span class="meta-separator">/</span><a href="/deployment.json">r{snapshot.revision}</a><span class="meta-date">{t.updated} <time datetime={snapshot.dataUpdatedAt}>{snapshot.dataUpdatedAt.slice(0,10)}</time></span></div>
+<section id="models" class="catalogue" aria-label={t.models}><form class="toolbar" role="search" id="filters"><div class="search-field"><span aria-hidden="true">⌕</span><label for="search" class="sr-only">{t.searchLabel}</label><input type="search" id="search" name="q" placeholder={t.search} autocomplete="off"/><kbd>⌘ K</kbd></div><label class="filter"><span class="sr-only">{t.developer}</span><select id="developer" name="developer" aria-label={t.developer}><option value="">{t.allDevelopers}</option>{developers.map(developer=><option value={developer.id}>{developer.name}</option>)}</select></label><label class="filter"><span class="sr-only">{t.task}</span><select id="task" name="task" aria-label={t.task}><option value="">{t.allTasks}</option>{tasks.map(task=><option value={task}>{label(task)}</option>)}</select></label><label class="filter"><span class="sr-only">{t.weights}</span><select id="weights" name="weights" aria-label={t.weights}><option value="">{t.allWeights}</option><option value="open">{t.open}</option><option value="closed">{t.closed}</option><option value="unknown">{t.unknown}</option></select></label><button type="reset" class="reset-button">{t.reset}</button></form>
+<div class="table-scroll" tabindex="0" role="region" aria-label={t.models}><table><caption class="sr-only">{t.title} · {t.unit}</caption><thead><tr>{[['name',t.model],['developer',t.developer],['tasks',t.task],['input',t.input],['output',t.output],['context',t.context],['maxOutput',t.maxOutput],['parameters',t.parameters],['reasoning',t.reasoning],['tools',t.tools],['weights',t.weights],['license',t.license],['released',t.released],['source',t.source]].map(([key,title])=><th scope="col" aria-sort={key==='released'?'descending':'none'}><button type="button" data-sort={key}>{title}<span class="sort-icon" aria-hidden="true">{key==='released'?'↓':'↕'}</span></button></th>)}</tr></thead><tbody id="model-rows">{models.map(model=>{const developer=snapshot.data.developers[model.developerId];return <tr data-model={model.id} data-search={searchText(model,developer.name)} data-developer={model.developerId} data-task={model.tasks.join(' ')} data-weights={model.openWeights==null?'unknown':model.openWeights?'open':'closed'} data-name={model.name} data-input={model.modalities.input?.join(' ')??''} data-output={model.modalities.output?.join(' ')??''} data-context={model.specs.text?.contextWindowTokens??''} data-max-output={model.specs.text?.maxOutputTokens??''} data-parameters={model.parameters?.totalBillions??''} data-reasoning={model.capabilities.reasoning==null?'':Number(model.capabilities.reasoning)} data-tools={model.capabilities.toolCalling==null?'':Number(model.capabilities.toolCalling)} data-license={model.modelLicense??''} data-released={model.releaseDate??''} data-source={model.sources[0]?.url??''}><th scope="row"><div class="model-cell"><img src={`/v1/models/${model.id}.svg`} width="24" height="24" alt="" loading="lazy"/><div><a href={`/v1/models/${model.id}.json`} title={model.name}>{model.name}</a><span class="model-id">{model.id}</span></div></div></th><td>{developer.name}</td><td><div class="task-list">{model.tasks.map(task=><span>{label(task)}</span>)}</div></td><td>{model.modalities.input?.join(', ')??'—'}</td><td>{model.modalities.output?.join(', ')??'—'}</td><td class="number">{tokens(model.specs.text?.contextWindowTokens)}</td><td class="number">{tokens(model.specs.text?.maxOutputTokens)}</td><td class="number">{parameters(model)}</td><td><span class:list={['boolean',{'positive':model.capabilities.reasoning===true}]}>{flag(model.capabilities.reasoning)}</span></td><td><span class:list={['boolean',{'positive':model.capabilities.toolCalling===true}]}>{flag(model.capabilities.toolCalling)}</span></td><td>{model.openWeights==null?'—':model.openWeights?t.open:t.closed}</td><td>{model.modelLicense??'—'}</td><td class="number">{model.releaseDate??'—'}</td><td>{model.sources[0]?<a class="source-link" href={model.sources[0].url} aria-label={`${t.viewSource}: ${model.name}`} rel="noopener noreferrer">↗</a>:'—'}</td></tr>;})}</tbody></table><div class="empty-state" id="empty-state" hidden><h2>{t.empty}</h2><p>{t.emptyHint}</p></div></div>
+<div class="table-footer"><span role="status" aria-live="polite"><span id="result-count">{models.length}</span> / {models.length} {t.showing}</span><span>{t.unit}</span><a href="/v1/schema.json">Schema v1 ↗</a></div></section>
+<section id="get-started" class="docs-section"><div><h2>{t.readDocs}</h2><p>{t.docsDescription}</p><a href="https://github.com/LMSpeed/models#readme">README ↗</a></div><div class="code-examples">{Object.entries(snippets).map(([language,code])=><details open={language==='HTTP'}><summary>{language}</summary><pre><code>{code}</code></pre></details>)}</div></section><p class="scope-note">{t.scope}</p></main><footer><span>{t.maintained} · <a href="https://lmspeed.net">lmspeed.net ↗</a></span><div><a href="https://github.com/LMSpeed/models/blob/main/data/NOTICE.md">Licenses</a><a href="/llms.txt">For AI / llms.txt</a><a href="/v1/api.json">API</a></div></footer>
+<script src="../lib/catalogue-controls.ts"></script>
+</body></html>
