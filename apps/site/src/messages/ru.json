@@ -54,5 +54,8 @@
   "speech-generation": "Синтез речи",
   "transcription": "Распознавание речи",
   "embedding": "Эмбеддинги",
-  "rerank": "Ранжирование"
+  "rerank": "Ранжирование",
+  "skip": "К таблице моделей",
+  "licenses": "Лицензии",
+  "developersCount": "разработчиков"
 }

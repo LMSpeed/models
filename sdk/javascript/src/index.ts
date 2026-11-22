@@ -240,6 +240,16 @@ export class Client {
       await response.text(),
       this.baseUrl,
     );
+    if (
+      this.catalogue &&
+      (candidate.revision < this.catalogue.revision ||
+        (candidate.revision === this.catalogue.revision &&
+          candidate.snapshot.sha256 !== this.catalogue.snapshot.sha256))
+    )
+      throw new ModelsError(
+        'revision_mismatch',
+        'Source revision regressed or changed without a new revision',
+      );
     this.catalogue = candidate;
     this.etag = response.headers.get('etag') ?? undefined;
     return candidate;

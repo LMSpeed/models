@@ -54,5 +54,8 @@
   "speech-generation": "语音生成",
   "transcription": "语音转写",
   "embedding": "向量嵌入",
-  "rerank": "重排序"
+  "rerank": "重排序",
+  "skip": "跳转到模型",
+  "licenses": "许可声明",
+  "developersCount": "位开发者"
 }

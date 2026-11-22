@@ -369,8 +369,8 @@ func (c *Client) Refresh(ctx context.Context) (*Catalog, error) {
 	catalog.BaseURL = c.BaseURL
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if c.current != nil && c.current.Snapshot.Revision > catalog.Snapshot.Revision {
-		return c.current, nil
+	if c.current != nil && (c.current.Snapshot.Revision > catalog.Snapshot.Revision || c.current.Snapshot.Revision == catalog.Snapshot.Revision && c.current.Snapshot.Sha256 != catalog.Snapshot.Sha256) {
+		return nil, &Error{Code: "revision_mismatch", Message: "Source revision regressed or changed without a new revision"}
 	}
 	c.current = catalog
 	c.etag = response.Header.Get("ETag")

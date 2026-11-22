@@ -29,6 +29,21 @@ const commands: Record<string, [string, string[]]> = {
   ],
   go: ['go', ['-C', 'sdk/go', 'test', '-race', './...']],
 };
+if (language === 'rust' && process.env.MODELS_RUST_COVERAGE === '1')
+  commands.rust = [
+    'cargo',
+    [
+      '+nightly-2026-11-21',
+      'llvm-cov',
+      '--branch',
+      '--locked',
+      '--manifest-path',
+      'sdk/rust/Cargo.toml',
+      '--json',
+      '--output-path',
+      'coverage/rust.json',
+    ],
+  ];
 const selected = commands[language];
 if (!selected) throw new Error('Unknown SDK language');
 await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));

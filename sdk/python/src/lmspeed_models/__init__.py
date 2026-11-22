@@ -1,6 +1,7 @@
 """Read LMSpeed model specifications. Importing this package never uses the network."""
 from __future__ import annotations
 from dataclasses import dataclass, field
+from datetime import datetime
 from importlib.resources import files
 import hashlib
 import json
@@ -9,7 +10,8 @@ from urllib.parse import quote
 import httpx
 import jsonschema
 import rfc8785
-from .types import Snapshot, ModelValue as Model, snapshot_from_dict
+from .types import Snapshot, ModelValue as Model, SourceElement, ModelsDev
+from .codec import decode
 __version__ = "0.1.0"
 DEFAULT_URL = "https://models.lmspeed.net"
 class ModelsError(Exception):
@@ -53,7 +55,7 @@ class Catalog:
             jsonschema.Draft202012Validator(_compatible_schema(schema)).validate(raw)
             if hashlib.sha256(rfc8785.dumps(raw["data"])).hexdigest() != raw["sha256"]:
                 raise ValueError("Snapshot hash mismatch")
-            snapshot = snapshot_from_dict(raw)
+            snapshot = decode(Snapshot, raw)
             if snapshot.revision != snapshot.data.aliases.revision or snapshot.counts.models != len(snapshot.data.models) or snapshot.counts.developers != len(snapshot.data.developers):
                 raise ValueError("Snapshot counts or alias revision mismatch")
             for key, model in snapshot.data.models.items():
@@ -69,7 +71,7 @@ class Catalog:
     def revision(self) -> int:
         return self.snapshot.revision
     @property
-    def data_updated_at(self):
+    def data_updated_at(self) -> datetime:
         return self.snapshot.data_updated_at
     @property
     def models(self) -> dict[str, Model]:
@@ -102,10 +104,10 @@ class Catalog:
         return [model for model in self.models.values() if (task is None or task in model.tasks) and (input is None or input in (model.modalities.input or [])) and (output is None or output in (model.modalities.output or [])) and (developer_id is None or model.developer_id == developer_id)]
     def icon_url(self, value: str, namespace: str | None = None) -> str:
         return f"{self.base_url}/v1/models/{quote(self.get(value, namespace).id, safe='')}.svg"
-    def sources(self, value: str, field: str | None = None, namespace: str | None = None):
+    def sources(self, value: str, field: str | None = None, namespace: str | None = None) -> list[SourceElement]:
         sources = self.get(value, namespace).sources
         return sources if field is None else [source for source in sources if any(field == path or field.startswith(path + "/") for path in source.fields)]
-    def upstream_facts(self, value: str, namespace: str | None = None):
+    def upstream_facts(self, value: str, namespace: str | None = None) -> list[ModelsDev]:
         facts = self.get(value, namespace).upstream_facts
         return facts.models_dev if facts else []
     def attach_logos(self, logos: dict[str, Any]) -> None:
@@ -152,6 +154,8 @@ class Client:
                 raise ModelsError("invalid_contract", "304 without a loaded catalogue")
             return self.current
         candidate = Catalog.from_json(_json(response), self.base_url)
+        if self.current and (candidate.revision < self.current.revision or candidate.revision == self.current.revision and candidate.snapshot.sha256 != self.current.snapshot.sha256):
+            raise ModelsError("revision_mismatch", "Source revision regressed or changed without a new revision")
         self.current, self.etag = candidate, response.headers.get("etag")
         return candidate
     def get(self, value: str, namespace: str | None = None) -> Model:
@@ -190,6 +194,8 @@ class AsyncClient:
                 raise ModelsError("invalid_contract", "304 without a loaded catalogue")
             return self.current
         candidate = Catalog.from_json(_json(response), self.base_url)
+        if self.current and (candidate.revision < self.current.revision or candidate.revision == self.current.revision and candidate.snapshot.sha256 != self.current.snapshot.sha256):
+            raise ModelsError("revision_mismatch", "Source revision regressed or changed without a new revision")
         self.current, self.etag = candidate, response.headers.get("etag")
         return candidate
     async def get(self, value: str, namespace: str | None = None) -> Model:
@@ -206,7 +212,7 @@ class AsyncClient:
         return value
     async def aclose(self) -> None:
         await self._http.aclose()
-    async def __aenter__(self):
+    async def __aenter__(self) -> AsyncClient:
         return self
-    async def __aexit__(self, *_args):
+    async def __aexit__(self, *_args: object) -> None:
         await self.aclose()

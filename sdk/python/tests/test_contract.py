@@ -79,11 +79,8 @@ class UserAsyncHttpTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual((await client.coverage())["revision"], first.revision)
             self.assertEqual((await client.get("Example LLM")).id, "fixture-llm")
         async with AsyncClient(base + "/slow") as client:
-            task = asyncio.create_task(client.refresh())
-            await asyncio.sleep(0.005)
-            task.cancel()
-            with self.assertRaises(asyncio.CancelledError):
-                await task
+            with self.assertRaises(asyncio.TimeoutError):
+                await asyncio.wait_for(client.refresh(), timeout=0.005)
 
 class UserPublishedDataTests(unittest.TestCase):
     def test_user_reads_the_actual_static_catalogue(self):
@@ -101,3 +98,17 @@ class UserPublishedDataTests(unittest.TestCase):
         self.assertGreater(len(catalog.filter(task="image-generation")), 0)
         for alias in expected["data"]["aliases"]["models"]:
             self.assertEqual(catalog.resolve_model_id(alias["value"], alias["namespace"]).canonical_id, alias["canonicalId"])
+
+class UserRevisionTests(unittest.TestCase):
+    def test_user_keeps_newer_loaded_specs_when_a_source_serves_an_older_revision(self):
+        import os
+        from lmspeed_models import Client, ModelsError
+        # Given a real HTTP source serving a valid catalogue, then an older valid revision.
+        client=Client(os.environ["MODEL_TEST_BASE_URL"]+"/rewind-python")
+        previous=client.refresh()
+        # When the user explicitly refreshes across that regression.
+        with self.assertRaises(ModelsError) as failure:
+            client.refresh()
+        # Then the failure is distinguishable and the newer loaded catalogue remains available.
+        self.assertEqual(failure.exception.code,"revision_mismatch")
+        self.assertIs(client.current,previous)

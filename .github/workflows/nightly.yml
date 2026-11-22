@@ -9,6 +9,10 @@ jobs:
   regression:
     uses: ./.github/workflows/validate.yml
   synchronize:
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
     uses: ./.github/workflows/sync.yml
     secrets: inherit
   recover-releases:
@@ -16,7 +20,9 @@ jobs:
     uses: ./.github/workflows/release-sdks.yml
     secrets: inherit
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
+      actions: write
       id-token: write
   inspect:
     needs: [regression, synchronize]

@@ -41,7 +41,7 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with: {node-version: '22.23.5', cache: pnpm}
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec tsx scripts/check-docs.ts
+      - run: pnpm exec tsx scripts/check-docs.ts && pnpm exec tsx scripts/check-tests.ts
       - run: pnpm exec tsx scripts/check-changes.ts
         env:
           CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}

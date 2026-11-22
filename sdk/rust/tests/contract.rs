@@ -163,3 +163,23 @@ fn user_reads_actual_static_catalogue() {
         );
     }
 }
+
+#[tokio::test]
+async fn user_keeps_newer_loaded_specs_when_the_source_regresses() {
+    // Given a real HTTP source serving a newer snapshot before an older valid revision.
+    let base = std::env::var("MODEL_TEST_BASE_URL").unwrap();
+    let mut client = lmspeed_models::Client::new(
+        format!("{base}/rewind-rust"),
+        std::time::Duration::from_secs(5),
+    )
+    .unwrap();
+    let previous = client.refresh().await.unwrap().revision();
+    // When the caller explicitly refreshes across that regression.
+    let error = client
+        .refresh()
+        .await
+        .expect_err("A revision regression must be explicit");
+    // Then the loaded catalogue stays available and the failure is distinguishable.
+    assert_eq!(error.code, "revision_mismatch");
+    assert_eq!(client.current().unwrap().revision(), previous);
+}

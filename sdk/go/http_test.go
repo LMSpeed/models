@@ -117,3 +117,19 @@ func TestUserRefreshesAndRevalidatesRealHTTPWithoutLosingLoadedData(t *testing.T
 		t.Fatal(err)
 	}
 }
+
+func TestUserKeepsNewerLoadedSpecsWhenSourceRegresses(t *testing.T) {
+	// Given a real HTTP source serving a newer catalogue followed by an older valid one.
+	client := NewClient(os.Getenv("MODEL_TEST_BASE_URL") + "/rewind-go")
+	previous, err := client.Refresh(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	// When a caller explicitly refreshes across the revision regression.
+	_, err = client.Refresh(context.Background())
+	// Then the failure is explicit and the newer loaded catalogue remains available.
+	requireCode(t, err, "revision_mismatch")
+	if client.Current() != previous {
+		t.Fatal("Lost the newer catalogue")
+	}
+}

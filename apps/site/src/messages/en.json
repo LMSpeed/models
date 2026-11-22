@@ -54,5 +54,8 @@
   "speech-generation": "Speech generation",
   "transcription": "Transcription",
   "embedding": "Embedding",
-  "rerank": "Reranking"
+  "rerank": "Reranking",
+  "skip": "Skip to models",
+  "licenses": "Licenses",
+  "developersCount": "developers"
 }

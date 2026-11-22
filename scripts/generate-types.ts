@@ -38,7 +38,7 @@ for (const [lang, path, options] of [
   [
     'python',
     'sdk/python/src/lmspeed_models/types.py',
-    { 'python-version': '3.7' },
+    { 'python-version': '3.7', 'just-types': 'true' },
   ],
   [
     'rust',

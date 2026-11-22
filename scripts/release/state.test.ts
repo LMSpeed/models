@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   beginAttempt,
   finishAttempt,
+  goModulePath,
   nextVersion,
   pythonVersion,
   type ReleaseState,
@@ -75,5 +76,14 @@ describe('user receives one recoverable release across all four ecosystems', () 
     expect(pythonVersion('1.3.0-beta.2')).toBe('1.3.0b2');
     expect(pythonVersion('1.3.0-rc.1')).toBe('1.3.0rc1');
     expect(pythonVersion('1.3.0')).toBe('1.3.0');
+  });
+  it('user installs the correct Go module path for stable and future major versions', () => {
+    // Given unified stable and prerelease semantic versions.
+    // When a release allocates the Go installation path.
+    const stable = goModulePath('1.2.3');
+    const major = goModulePath('2.0.0-beta.1');
+    // Then v2 follows Go semantic import versioning without changing v1 paths.
+    expect(stable).toBe('github.com/lmspeed/models/sdk/go');
+    expect(major).toBe('github.com/lmspeed/models/sdk/go/v2');
   });
 });

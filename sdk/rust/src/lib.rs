@@ -346,7 +346,10 @@ impl Default for Client {
     fn default() -> Self {
         Self {
             base_url: DEFAULT_URL.into(),
-            http: reqwest::Client::builder().timeout(Duration::from_secs(30)).build().expect("default HTTP client configuration"),
+            http: reqwest::Client::builder()
+                .timeout(Duration::from_secs(30))
+                .build()
+                .expect("default HTTP client configuration"),
             current: None,
             etag: None,
         }
@@ -416,6 +419,16 @@ impl Client {
             .map(str::to_owned);
         let mut candidate = Catalog::from_json(&response.text().await.map_err(http_error)?)?;
         candidate.base_url = self.base_url.clone();
+        if self.current.as_ref().is_some_and(|current| {
+            candidate.revision() < current.revision()
+                || candidate.revision() == current.revision()
+                    && candidate.snapshot.sha256 != current.snapshot.sha256
+        }) {
+            return Err(ModelsError::new(
+                "revision_mismatch",
+                "Source revision regressed or changed without a new revision",
+            ));
+        }
         self.current = Some(candidate);
         self.etag = etag;
         self.current

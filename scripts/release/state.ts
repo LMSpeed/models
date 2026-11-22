@@ -117,3 +117,8 @@ export function stateFromBody(body: string): ReleaseState {
 export function bodyWithState(notes: string, state: ReleaseState): string {
   return `${notes}\n\n<!-- lmspeed-release-state\n${JSON.stringify(state, null, 2)}\n-->`;
 }
+
+export function goModulePath(version: string): string {
+  const parsed = parseVersion(version);
+  return `github.com/lmspeed/models/sdk/go${parsed.major >= 2 ? `/v${parsed.major}` : ''}`;
+}

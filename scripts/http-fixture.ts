@@ -85,6 +85,19 @@ export const server = createServer(async (request, response) => {
       return;
     }
   }
+  if (path.includes('/rewind-')) {
+    const count = attempts.get(path) ?? 0;
+    attempts.set(path, count + 1);
+    const revision = count === 0 ? valid.revision + 1 : valid.revision;
+    const data = {
+      ...valid.data,
+      aliases: { ...valid.data.aliases, revision },
+    };
+    const sha = await sha256(data);
+    response.setHeader('etag', `"${sha}"`);
+    response.end(JSON.stringify({ ...valid, data, revision, sha256: sha }));
+    return;
+  }
   response.setHeader('etag', etag);
   if (request.headers['if-none-match'] === etag) {
     response.writeHead(304);

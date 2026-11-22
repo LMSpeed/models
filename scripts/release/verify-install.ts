@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { run } from '../lib/process';
-import { type Ecosystem, pythonVersion } from './state';
+import { type Ecosystem, goModulePath, pythonVersion } from './state';
 export async function verifyInstall(
   ecosystem: Ecosystem,
   version: string,
@@ -58,12 +58,12 @@ export async function verifyInstall(
       join(temp, 'go.mod'),
       'module lmspeed-public-smoke\n\ngo 1.23.0\n',
     );
-    run('go', ['get', `github.com/lmspeed/models/sdk/go@v${version}`], {
+    run('go', ['get', `${goModulePath(version)}@v${version}`], {
       cwd: temp,
     });
     await writeFile(
       join(temp, 'main.go'),
-      `package main\nimport("os"; models "github.com/lmspeed/models/sdk/go")\nfunc main(){raw,e:=os.ReadFile("api.json");if e!=nil{panic(e)};c,e:=models.LoadJSON(raw);if e!=nil{panic(e)};if models.Version!="${version}"||c.Snapshot.Revision==0{panic("invalid public module")}}\n`,
+      `package main\nimport("os"; models "${goModulePath(version)}")\nfunc main(){raw,e:=os.ReadFile("api.json");if e!=nil{panic(e)};c,e:=models.LoadJSON(raw);if e!=nil{panic(e)};if models.Version!="${version}"||c.Snapshot.Revision==0{panic("invalid public module")}}\n`,
     );
     run('go', ['run', '.'], { cwd: temp });
   }

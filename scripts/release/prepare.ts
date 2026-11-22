@@ -1,6 +1,6 @@
 import { readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { api, run } from '../lib/process';
-import { nextVersion, pythonVersion } from './state';
+import { goModulePath, nextVersion, pythonVersion } from './state';
 
 const repository = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
 const config = JSON.parse(await readFile('release.json', 'utf8')) as {
@@ -34,6 +34,10 @@ await writeFile(
   JSON.stringify({ ...config, version }, null, 2) + '\n',
 );
 const edits: [string, (text: string) => string][] = [
+  [
+    'sdk/go/go.mod',
+    (text) => text.replace(/^module .+$/m, `module ${goModulePath(version)}`),
+  ],
   [
     'sdk/javascript/package.json',
     (text) => JSON.stringify({ ...JSON.parse(text), version }, null, 2) + '\n',

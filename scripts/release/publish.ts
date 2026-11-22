@@ -123,6 +123,21 @@ for (const [name, hash] of Object.entries(manifest.files))
     state.artifacts[name] !== hash
   )
     throw new Error(`Immutable artifact mismatch: ${name}`);
+if (process.env.GITHUB_SHA && process.env.GITHUB_SHA !== manifest.commit) {
+  run('gh', [
+    'workflow',
+    'run',
+    'release-sdks.yml',
+    '--repo',
+    repository,
+    '--ref',
+    tag,
+  ]);
+  process.stdout.write(
+    `Publication resumes from immutable tag ${tag}; registry provenance will name the actual source commit.\n`,
+  );
+  process.exit(0);
+}
 const notes = release.body.split('\n\n<!-- lmspeed-release-state')[0];
 const save = () => {
   release = api<Release>(

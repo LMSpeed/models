@@ -100,4 +100,15 @@ describe('user can refresh real HTTP catalogue files without losing cached data'
       code: 'invalid_json',
     });
   });
+  it('user retains newer loaded specs when the source regresses its revision', async () => {
+    // Given a real HTTP boundary serving a newer valid snapshot before an older one.
+    const client = new Client({ baseUrl: `${base}/rewind-javascript` });
+    const previous = await client.refresh();
+    // When a user explicitly refreshes the same catalogue.
+    await expect(client.refresh()).rejects.toMatchObject({
+      code: 'revision_mismatch',
+    });
+    // Then the newer offline catalogue remains usable with its original revision.
+    expect(client.current).toBe(previous);
+  });
 });
