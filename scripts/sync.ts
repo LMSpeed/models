@@ -1,5 +1,9 @@
-import { appendFile, mkdir, writeFile } from 'node:fs/promises';
-import { type Snapshot, validateSnapshot } from '../packages/core/src/index';
+import { appendFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import {
+  canonicalJson,
+  type Snapshot,
+  validateSnapshot,
+} from '../packages/core/src/index';
 import { validateCoverage } from './coverage-contract';
 import { readSnapshot, writeSnapshot } from './sync-lib';
 
@@ -26,6 +30,27 @@ for (let attempt = 1; attempt <= 3; attempt++) {
         ? prior
         : await validateSnapshot(await response.json());
     if (!snapshot) throw new Error('304 without a loaded snapshot');
+    if (
+      response.status === 304 &&
+      process.env.CHECK_UPSTREAM_COVERAGE !== '1'
+    ) {
+      await writeFile(
+        '.sync/last-success.json',
+        JSON.stringify({
+          checkedAt: new Date().toISOString(),
+          revision: snapshot.revision,
+          sourceEtag: response.headers.get('etag'),
+          reviewRequired: false,
+        }),
+      );
+      if (process.env.GITHUB_OUTPUT)
+        await appendFile(
+          process.env.GITHUB_OUTPUT,
+          `review_required=false\nrevision=${snapshot.revision}\n`,
+        );
+      success = true;
+      break;
+    }
     const coverageResponse = await fetch(
       new URL('/api/v1/model-specs/coverage', source),
       { signal: AbortSignal.timeout(30000) },
@@ -48,10 +73,28 @@ for (let attempt = 1; attempt <= 3; attempt++) {
       await writeSnapshot(process.cwd(), snapshot, true);
     }
     await mkdir('coverage', { recursive: true });
-    await writeFile(
-      'coverage/models-dev.json',
-      `${JSON.stringify(coverage, null, 2)}\n`,
-    );
+    const coverageContent = `${JSON.stringify(coverage, null, 2)}\n`;
+    let priorCoverage: Record<string, unknown> | undefined;
+    try {
+      priorCoverage = JSON.parse(
+        await readFile('coverage/models-dev.json', 'utf8'),
+      ) as Record<string, unknown>;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+    const semanticCoverage = (report: Record<string, unknown>) => {
+      const {
+        lastCheckedAt: _checked,
+        lastSuccessfulCheckAt: _successful,
+        ...content
+      } = report;
+      return canonicalJson(content);
+    };
+    if (
+      !priorCoverage ||
+      semanticCoverage(priorCoverage) !== semanticCoverage(coverage)
+    )
+      await writeFile('coverage/models-dev.json', coverageContent);
     if (process.env.GITHUB_OUTPUT)
       await appendFile(
         process.env.GITHUB_OUTPUT,

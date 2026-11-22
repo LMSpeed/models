@@ -5,7 +5,16 @@ on:
   schedule:
     - cron: '43 */6 * * *'
   workflow_dispatch:
+    inputs:
+      check_coverage:
+        type: boolean
+        default: false
+        description: Inspect upstream coverage even if the source revision is unchanged
   workflow_call:
+    inputs:
+      check_coverage:
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -28,6 +37,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - id: sync
         run: pnpm sync && pnpm validate
+        env:
+          CHECK_UPSTREAM_COVERAGE: ${{ inputs.check_coverage && '1' || '0' }}
       - name: Propose a validated data revision
         env:
           GH_TOKEN: ${{ github.token }}
