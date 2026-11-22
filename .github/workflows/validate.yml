@@ -53,6 +53,14 @@ jobs:
       - if: needs.scope.outputs.build == 'true'
         run: pnpm exec playwright install --with-deps chromium && pnpm exec playwright test
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: browser-failure-${{ github.run_id }}
+          path: |
+            test-results
+            playwright-report
+          retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: needs.scope.outputs.build == 'true'
         with:
           name: static-${{ github.sha }}
