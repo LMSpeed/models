@@ -24,15 +24,16 @@ test('user finds canonical models by an external ID and filters their actual spe
   // Then only matching canonical models remain, without prices or provider columns.
   const rows = table.locator('tbody tr:visible');
   expect(await rows.count()).toBeGreaterThan(0);
-  for (const row of await rows.all())
-    await expect(
-      row.getByText('Image generation', { exact: true }),
-    ).toBeVisible();
+  const displayed = await rows.allInnerTexts();
+  expect(
+    displayed.filter((text) => !text.includes('Image generation')),
+  ).toEqual([]);
+  const headers = table.locator('thead');
   await expect(
-    table.getByRole('columnheader', { name: 'Price', exact: true }),
+    headers.getByRole('columnheader', { name: 'Price', exact: true }),
   ).toHaveCount(0);
   await expect(
-    table.getByRole('columnheader', { name: 'Providers', exact: true }),
+    headers.getByRole('columnheader', { name: 'Providers', exact: true }),
   ).toHaveCount(0);
 });
 test('user sorts token limits and sees a useful empty state @site', async ({

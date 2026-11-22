@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   assertDeployment,
+  awaitDeployment,
   type Deployment,
   digestDirectory,
   mainCommit,
@@ -61,6 +62,7 @@ if (!previewOnly) {
   }
 }
 alchemy('preview');
+await awaitDeployment('https://models-preview.lmspeed.net', expected);
 run('pnpm', [
   'exec',
   'tsx',
@@ -86,6 +88,7 @@ if (previewOnly) {
 assertDeployment(metadata, expected, await mainCommit());
 try {
   alchemy('production');
+  await awaitDeployment(prod, expected);
   run('pnpm', ['exec', 'tsx', 'scripts/smoke.ts', prod]);
   const current = (await (
     await fetch(`${prod}/deployment.json`, {

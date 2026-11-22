@@ -72,3 +72,32 @@ export async function mainCommit(): Promise<string> {
     throw new Error('Invalid main commit');
   return value.object.sha;
 }
+
+export async function awaitDeployment(
+  base: string,
+  expected: Deployment,
+  options: { retryDelayMs?: number } = {},
+): Promise<Deployment> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await fetch(`${base}/deployment.json`, {
+        signal: AbortSignal.timeout(30000),
+      });
+      if (!response.ok)
+        throw new Error(`Deployment metadata HTTP ${response.status}`);
+      const actual = (await response.json()) as Deployment;
+      assertDeployment(actual, expected, expected.commit);
+      return actual;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3)
+        await new Promise((resolve) =>
+          setTimeout(resolve, options.retryDelayMs ?? 30000),
+        );
+    }
+  }
+  throw new Error(
+    `Static artifact unavailable after 3 attempts: ${String(lastError)}`,
+  );
+}
