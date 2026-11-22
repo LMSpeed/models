@@ -1,4 +1,5 @@
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import { server } from './http-fixture';
 
 const language = process.argv[2];
@@ -27,7 +28,17 @@ const commands: Record<string, [string, string[]]> = {
     'cargo',
     ['test', '--locked', '--manifest-path', 'sdk/rust/Cargo.toml'],
   ],
-  go: ['go', ['-C', 'sdk/go', 'test', '-race', './...']],
+  go: [
+    'go',
+    [
+      '-C',
+      'sdk/go',
+      'test',
+      '-race',
+      '-coverprofile=../../coverage/go.out',
+      './...',
+    ],
+  ],
 };
 if (language === 'rust' && process.env.MODELS_RUST_COVERAGE === '1')
   commands.rust = [
@@ -65,6 +76,47 @@ try {
       code === 0 ? resolve() : reject(new Error(`${language} failed: ${code}`)),
     );
   });
+  if (language === 'python') {
+    execFileSync(selected[0], [
+      '-m',
+      'coverage',
+      'json',
+      '-o',
+      'coverage/python.json',
+    ]);
+    const report = JSON.parse(
+      await readFile('coverage/python.json', 'utf8'),
+    ) as { totals: { num_branches: number; covered_branches: number } };
+    const branches =
+      (report.totals.covered_branches / report.totals.num_branches) * 100;
+    if (!Number.isFinite(branches) || branches < 70)
+      throw new Error(`Python branch coverage below 70%: ${branches}`);
+    process.stdout.write(`Python branch coverage: ${branches.toFixed(2)}%\n`);
+  }
+  if (language === 'rust' && process.env.MODELS_RUST_COVERAGE === '1') {
+    const report = JSON.parse(await readFile('coverage/rust.json', 'utf8')) as {
+      data: Array<{ totals: { branches: { percent: number } } }>;
+    };
+    const branches = report.data[0].totals.branches.percent;
+    if (branches < 70)
+      throw new Error(`Rust branch coverage below 70%: ${branches}`);
+    process.stdout.write(`Rust branch coverage: ${branches.toFixed(2)}%\n`);
+  }
+  if (language === 'go') {
+    const summary = execFileSync(
+      'go',
+      ['tool', 'cover', '-func=../../coverage/go.out'],
+      { encoding: 'utf8', cwd: `${process.cwd()}/sdk/go` },
+    );
+    const statements = Number(
+      /total:\s+\(statements\)\s+([\d.]+)%/.exec(summary)?.[1],
+    );
+    if (!Number.isFinite(statements) || statements < 70)
+      throw new Error(`Go statement coverage below 70%: ${statements}`);
+    process.stdout.write(
+      `Go statement coverage (Go toolchain does not expose branches): ${statements}%\n`,
+    );
+  }
 } finally {
   server.closeAllConnections();
   await new Promise<void>((resolve) => server.close(() => resolve()));

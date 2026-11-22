@@ -98,8 +98,12 @@ jobs:
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16
         if: matrix.language == 'go'
         with: {go-version: '${{ matrix.go }}', cache-dependency-path: sdk/go/go.sum}
+      - if: matrix.language == 'rust' && matrix.rust == '1.99.1'
+        run: rustup toolchain install nightly-2026-11-21 --profile minimal --component llvm-tools-preview && cargo install cargo-llvm-cov --version 0.9.2 --locked
       - run: pnpm build
       - run: pnpm exec tsx scripts/test-sdk.ts '${{ matrix.language }}'
+        env:
+          MODELS_RUST_COVERAGE: ${{ matrix.language == 'rust' && matrix.rust == '1.99.1' && '1' || '0' }}
   generated-contract:
     needs: scope
     if: needs.scope.outputs.sdk == 'true'
