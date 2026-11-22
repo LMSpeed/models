@@ -1,11 +1,32 @@
 import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
+import { run } from './lib/process';
 
 export interface Deployment {
   commit: string;
   revision: number;
   sha256: string;
+}
+
+export function assertCommitProgression(
+  published: string,
+  candidate: string,
+  cwd = process.cwd(),
+): void {
+  if (run('git', ['rev-parse', '--is-shallow-repository'], { cwd }) === 'true')
+    run(
+      'git',
+      [
+        'fetch',
+        '--unshallow',
+        '--no-tags',
+        'origin',
+        '+refs/heads/main:refs/remotes/origin/main',
+      ],
+      { cwd, timeout: 30000 },
+    );
+  run('git', ['merge-base', '--is-ancestor', published, candidate], { cwd });
 }
 
 export function assertDeployment(
