@@ -67,7 +67,7 @@ jobs:
         run: pnpm --filter @lmspeed/models-site typecheck && pnpm build && pnpm exec tsx scripts/validate-artifacts.ts
       - if: needs.scope.outputs.build == 'true'
         run: pnpm exec playwright install --with-deps chromium && pnpm exec playwright test
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: failure()
         with:
           name: browser-failure-${{ github.run_id }}
@@ -75,7 +75,7 @@ jobs:
             test-results
             playwright-report
           retention-days: 7
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: needs.scope.outputs.build == 'true'
         with:
           name: static-${{ github.sha }}
