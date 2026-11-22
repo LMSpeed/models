@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
+  assertCommitProgression,
   assertDeployment,
   awaitDeployment,
   type Deployment,
@@ -34,7 +35,7 @@ if (!previewOnly && live?.ok) {
   if (value.revision === config.revision && value.sha256 !== config.sha256)
     throw new Error('Production revision hash mismatch');
   if (value.commit !== 'development') {
-    run('git', ['merge-base', '--is-ancestor', value.commit, commit]);
+    assertCommitProgression(value.commit, commit);
   }
 }
 const wrangler = (args: string[]) =>
