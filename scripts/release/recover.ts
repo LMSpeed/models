@@ -1,6 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { api, run } from '../lib/process';
-import { releaseComplete, stateFromBody } from './state';
+import { recoverableEcosystems, stateFromBody } from './state';
 
 const repo = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
 const active = api<{ workflow_runs: Array<{ status: string }> }>(
@@ -20,10 +20,8 @@ const recoverable = releases
   .some((item) => {
     const state = stateFromBody(item.body);
     return (
-      !releaseComplete(state) &&
-      Object.values(state.ecosystems).some(
-        (entry) => entry.status !== 'verified' && entry.attempts < 3,
-      )
+      recoverableEcosystems(state, process.env.SDK_PUBLISH_ECOSYSTEMS).length >
+      0
     );
   });
 const changes = (await readdir('.changes')).some((name) =>

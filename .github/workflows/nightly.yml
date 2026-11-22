@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+env:
+  SDK_PUBLISH_ECOSYSTEMS: ${{ vars.SDK_PUBLISH_ECOSYSTEMS || 'npm,pypi,crates,go' }}
 jobs:
   regression:
     uses: ./.github/workflows/validate.yml

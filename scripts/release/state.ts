@@ -57,6 +57,28 @@ export function releaseComplete(state: ReleaseState): boolean {
     (item) => item.status === 'verified',
   );
 }
+export function enabledEcosystems(value = 'npm,pypi,crates,go'): Ecosystem[] {
+  const names = value
+    .split(',')
+    .map((name) => name.trim())
+    .filter(Boolean);
+  if (names.some((name) => !['npm', 'pypi', 'crates', 'go'].includes(name)))
+    throw new Error('Invalid enabled publication ecosystem');
+  return [...new Set(names)] as Ecosystem[];
+}
+export function recoverableEcosystems(
+  state: ReleaseState,
+  enabled?: string,
+): Ecosystem[] {
+  return enabledEcosystems(enabled).filter((name) => {
+    const item = state.ecosystems[name];
+    return (
+      item.status !== 'verified' &&
+      item.status !== 'blocked' &&
+      item.attempts < 3
+    );
+  });
+}
 function parseVersion(version: string): {
   major: number;
   minor: number;

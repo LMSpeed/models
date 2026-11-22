@@ -6,6 +6,7 @@ import {
   nextVersion,
   pythonVersion,
   type ReleaseState,
+  recoverableEcosystems,
   releaseComplete,
 } from './state';
 
@@ -22,6 +23,20 @@ const initial: ReleaseState = {
   },
 };
 describe('user receives one recoverable release across all four ecosystems', () => {
+  it('user defers one registry without exhausting its retry budget or claiming a complete release', () => {
+    // Given three verified registries and a deferred Python account setup.
+    let state = structuredClone(initial);
+    for (const name of ['npm', 'crates', 'go'] as const)
+      state = finishAttempt(beginAttempt(state, name), name, true);
+    // When recovery respects the explicitly enabled registry list and the operator later re-enables Python.
+    const deferred = recoverableEcosystems(state, 'npm,crates,go');
+    const resumed = recoverableEcosystems(state, 'npm,pypi,crates,go');
+    // Then deferred work is not scheduled, its original retry budget survives, and the release remains incomplete.
+    expect(deferred).toEqual([]);
+    expect(resumed).toEqual(['pypi']);
+    expect(state.ecosystems.pypi.attempts).toBe(0);
+    expect(releaseComplete(state)).toBe(false);
+  });
   it('user never consumes successful packages again or retries a failed ecosystem more than three times', () => {
     // Given one immutable version, commit and package hash manifest.
     let state = structuredClone(initial);

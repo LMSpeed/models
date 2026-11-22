@@ -5,6 +5,7 @@ import {
   beginAttempt,
   bodyWithState,
   type Ecosystem,
+  enabledEcosystems,
   finishAttempt,
   pythonVersion,
   type ReleaseState,
@@ -287,8 +288,16 @@ async function publish(ecosystem: Ecosystem) {
   await verifyInstall(ecosystem, config.version);
 }
 const failures: string[] = [];
+const enabled = enabledEcosystems(process.env.SDK_PUBLISH_ECOSYSTEMS);
 for (const ecosystem of ['npm', 'pypi', 'crates', 'go'] as const) {
   if (state.ecosystems[ecosystem].status === 'verified') continue;
+  if (!enabled.includes(ecosystem)) {
+    state.ecosystems[ecosystem].error =
+      'Publishing deferred by repository configuration; retry budget is unchanged';
+    save();
+    failures.push(`${ecosystem}: publication is explicitly deferred`);
+    continue;
+  }
   if (state.ecosystems[ecosystem].attempts >= 3) {
     failures.push(`${ecosystem}: attempt budget exhausted`);
     continue;

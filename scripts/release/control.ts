@@ -1,6 +1,6 @@
 import { appendFile, readdir, readFile } from 'node:fs/promises';
 import { api, run } from '../lib/process';
-import { releaseComplete, stateFromBody } from './state';
+import { recoverableEcosystems, stateFromBody } from './state';
 
 const repo = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
 let mode = 'none';
@@ -16,10 +16,8 @@ const pending = releases
   .map((item) => stateFromBody(item.body))
   .find(
     (state) =>
-      !releaseComplete(state) &&
-      Object.values(state.ecosystems).some(
-        (item) => item.status !== 'verified' && item.attempts < 3,
-      ),
+      recoverableEcosystems(state, process.env.SDK_PUBLISH_ECOSYSTEMS).length >
+      0,
   );
 if (pending) {
   mode = 'publish';
