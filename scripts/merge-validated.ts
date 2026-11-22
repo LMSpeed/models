@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 import { api, run } from './lib/process';
 import {
   acceptsValidation,
-  nativeBotValidation,
   type NativeValidationRun,
+  nativeBotValidation,
   type ValidationRun,
 } from './validated-run';
 

@@ -1,8 +1,8 @@
 import { expect, it } from 'vitest';
 import {
   acceptsValidation,
-  nativeBotValidation,
   type NativeValidationRun,
+  nativeBotValidation,
   type ValidationRun,
 } from './validated-run';
 
