@@ -11,6 +11,21 @@ concurrency:
   group: validate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  continue-automation:
+    needs: required
+    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/automation/')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Continue from the trusted default branch after successful explicit validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VALIDATION_RUN_ID: ${{ github.run_id }}
+        run: gh workflow run merge-validated.yml --ref main -f validation_run_id="$VALIDATION_RUN_ID"
   scope:
     runs-on: ubuntu-24.04
     timeout-minutes: 5

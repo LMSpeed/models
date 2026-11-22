@@ -1,23 +1,28 @@
 import { readFile } from 'node:fs/promises';
 import { api, run } from './lib/process';
+import { acceptsValidation, type ValidationRun } from './validated-run';
 
 const event = JSON.parse(
   await readFile(process.env.GITHUB_EVENT_PATH ?? '', 'utf8'),
 ) as {
-  workflow_run: {
-    conclusion: string;
-    head_sha: string;
-    head_branch: string;
-    head_repository: { full_name: string };
-  };
+  workflow_run?: ValidationRun;
+  inputs?: { validation_run_id?: string };
 };
-const result = event.workflow_run;
 const repo = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
-if (
-  result.conclusion !== 'success' ||
-  result.head_repository.full_name !== repo
-)
-  process.exit(0);
+const requested = event.inputs?.validation_run_id;
+if (requested && !/^\d+$/.test(requested))
+  throw new Error('Invalid requested validation run');
+let result = event.workflow_run;
+if (requested) {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    result = api<ValidationRun>(`repos/${repo}/actions/runs/${requested}`);
+    if (result.status === 'completed') break;
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+  if (result?.status !== 'completed')
+    throw new Error('Requested validation did not finish within 3 checks');
+}
+if (!result || !acceptsValidation(result, repo)) process.exit(0);
 const prs = api<
   Array<{
     number: number;
