@@ -33,3 +33,5 @@ test-results/
 
 coverage/*
 !coverage/models-dev.json
+
+.alchemy/

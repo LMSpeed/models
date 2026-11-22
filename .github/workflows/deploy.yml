@@ -1,8 +1,8 @@
-name: Deploy static model database
+name: Verify Alchemy GitHub deployment
 on:
   push:
     branches: [main]
-    paths: ['data/**', 'coverage/models-dev.json', 'logos/**', 'apps/site/**', 'packages/core/**', 'packages/publish/**', 'pnpm-lock.yaml', 'scripts/deploy.ts']
+    paths: ['data/**', 'coverage/models-dev.json', 'logos/**', 'apps/site/**', 'packages/core/**', 'packages/publish/**', 'pnpm-lock.yaml', 'scripts/deploy.ts', 'scripts/deployment.ts', 'scripts/build-site.ts', 'alchemy.run.ts']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,17 +24,6 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with: {node-version: '22.23.5', cache: pnpm}
       - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with: {name: 'static-${{ github.sha }}', path: apps/site/dist}
-      - run: pnpm exec tsx scripts/validate-artifacts.ts && pnpm exec tsx scripts/deploy.ts
+      - run: pnpm exec tsx scripts/watch-deployment.ts
         env:
           GH_TOKEN: ${{ github.token }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: 8d98b0b554476c626fe537ad0548f45c
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: production-${{ github.sha }}
-          path: .deploy/result.json
-          include-hidden-files: true
-          retention-days: 90

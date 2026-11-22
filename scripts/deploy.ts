@@ -1,7 +1,12 @@
-import { createHash } from 'node:crypto';
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { api, run } from './lib/process';
+import {
+  assertDeployment,
+  type Deployment,
+  digestDirectory,
+  mainCommit,
+} from './deployment';
+import { run } from './lib/process';
 
 const root = process.cwd();
 const commit = run('git', ['rev-parse', 'HEAD']);
@@ -9,45 +14,19 @@ const config = JSON.parse(await readFile('data/manifest.json', 'utf8')) as {
   revision: number;
   sha256: string;
 };
-const repository = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
-const head = api<{ object: { sha: string } }>(
-  `repos/${repository}/git/ref/heads/main`,
-).object.sha;
-if (head !== commit)
-  throw new Error('A newer main commit superseded this deployment');
+const previewOnly = process.argv.includes('--preview');
+const expected = { commit, revision: config.revision, sha256: config.sha256 };
 const dist = join(root, 'apps/site/dist');
-async function digest(path: string): Promise<string> {
-  const hash = createHash('sha256');
-  async function visit(dir: string) {
-    for (const entry of (await readdir(dir, { withFileTypes: true })).sort(
-      (a, b) => a.name.localeCompare(b.name, 'en'),
-    )) {
-      const full = join(dir, entry.name);
-      if (entry.isDirectory()) await visit(full);
-      else {
-        hash.update(full.slice(dist.length));
-        hash.update(await readFile(full));
-      }
-    }
-  }
-  await visit(path);
-  return hash.digest('hex');
-}
-const artifactHash = await digest(dist);
+const artifactHash = await digestDirectory(dist);
 const metadata = JSON.parse(
   await readFile(join(dist, 'deployment.json'), 'utf8'),
-) as { commit: string; revision: number; sha256: string };
-if (
-  metadata.commit !== commit ||
-  metadata.sha256 !== config.sha256 ||
-  metadata.revision !== config.revision
-)
-  throw new Error('Static artifact does not belong to this commit and dataset');
+) as Deployment;
+assertDeployment(metadata, expected, previewOnly ? commit : await mainCommit());
 const prod = 'https://models.lmspeed.net';
 const live = await fetch(`${prod}/deployment.json`, {
   signal: AbortSignal.timeout(30000),
 }).catch(() => undefined);
-if (live?.ok) {
+if (!previewOnly && live?.ok) {
   const value = (await live.json()) as typeof metadata;
   if (value.revision > config.revision)
     throw new Error('Production contains newer data');
@@ -62,23 +41,26 @@ const wrangler = (args: string[]) =>
     timeout: 600000,
   });
 await mkdir('.deploy', { recursive: true });
+const alchemy = (stage: string) => {
+  const output = run(
+    'pnpm',
+    ['exec', 'alchemy', 'deploy', '--stage', stage, '--yes'],
+    { timeout: 600000 },
+  );
+  process.stdout.write(`${output}\n`);
+};
 let old: string | undefined;
-try {
-  const text = wrangler(['deployments', 'list', '--json']);
-  const deployments = JSON.parse(text) as Array<{
-    versions: Array<{ version_id: string }>;
-  }>;
-  old = deployments[0]?.versions[0]?.version_id;
-} catch (error) {
-  if (live?.ok) throw error;
+if (!previewOnly) {
+  try {
+    const deployments = JSON.parse(
+      wrangler(['deployments', 'list', '--json']),
+    ) as Array<{ versions: Array<{ version_id: string }> }>;
+    old = deployments[0]?.versions[0]?.version_id;
+  } catch (error) {
+    if (live?.ok) throw error;
+  }
 }
-wrangler([
-  'deploy',
-  '--env',
-  'preview',
-  '--message',
-  `commit=${commit} revision=${config.revision} artifact=${artifactHash}`,
-]);
+alchemy('preview');
 run('pnpm', [
   'exec',
   'tsx',
@@ -92,19 +74,18 @@ const preview = (await (
 ).json()) as typeof metadata;
 if (preview.commit !== commit || preview.sha256 !== config.sha256)
   throw new Error('Preview served another artifact');
-if ((await digest(dist)) !== artifactHash)
+if ((await digestDirectory(dist)) !== artifactHash)
   throw new Error('Static artifact changed after preview verification');
-if (
-  api<{ object: { sha: string } }>(`repos/${repository}/git/ref/heads/main`)
-    .object.sha !== commit
-)
-  throw new Error('A newer commit superseded preview');
+if (previewOnly) {
+  process.stdout.write(
+    JSON.stringify({ status: 'preview_verified', ...expected, artifactHash }) +
+      '\n',
+  );
+  process.exit(0);
+}
+assertDeployment(metadata, expected, await mainCommit());
 try {
-  wrangler([
-    'deploy',
-    '--message',
-    `commit=${commit} revision=${config.revision} artifact=${artifactHash}`,
-  ]);
+  alchemy('production');
   run('pnpm', ['exec', 'tsx', 'scripts/smoke.ts', prod]);
   const current = (await (
     await fetch(`${prod}/deployment.json`, {
