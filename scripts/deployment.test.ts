@@ -1,8 +1,43 @@
+import { execFileSync } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, it } from 'vitest';
-import { assertDeployment, digestDirectory } from './deployment';
+import {
+  assertCommitProgression,
+  assertDeployment,
+  digestDirectory,
+} from './deployment';
+
+it('user deploys a newer commit from a shallow build checkout while older commits remain rejected', async () => {
+  // Given a real repository and the depth-one checkout used by Workers Builds.
+  const root = await mkdtemp(join(tmpdir(), 'model-shallow-deploy-'));
+  const source = join(root, 'source');
+  const checkout = join(root, 'build');
+  const git = (cwd: string, ...args: string[]) =>
+    execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  try {
+    git(root, 'init', '--quiet', '--initial-branch=main', source);
+    git(source, 'config', 'user.name', 'Deployment test');
+    git(source, 'config', 'user.email', 'deployment@example.test');
+    await writeFile(join(source, 'spec.json'), '{"revision":1}');
+    git(source, 'add', '.');
+    git(source, 'commit', '--quiet', '-m', 'Published version');
+    const published = git(source, 'rev-parse', 'HEAD');
+    await writeFile(join(source, 'spec.json'), '{"revision":2}');
+    git(source, 'commit', '--quiet', '-am', 'Next version');
+    const next = git(source, 'rev-parse', 'HEAD');
+    git(root, 'clone', '--quiet', '--depth=1', `file://${source}`, checkout);
+    expect(git(checkout, 'rev-parse', '--is-shallow-repository')).toBe('true');
+    // When deployment checks whether the currently served commit precedes the candidate.
+    assertCommitProgression(published, next, checkout);
+    // Then a valid forward deployment succeeds without allowing a rollback to pass as a new deployment.
+    expect(git(checkout, 'rev-parse', '--is-shallow-repository')).toBe('false');
+    expect(() => assertCommitProgression(next, published, checkout)).toThrow();
+  } finally {
+    await rm(root, { recursive: true });
+  }
+});
 
 it('user cannot deploy a stale commit, mismatched artifact or older dataset', () => {
   // Given a validated artifact and an existing production dataset.
