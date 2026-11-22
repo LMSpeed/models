@@ -966,6 +966,12 @@
       ]
     },
     {
+      "id": "flux-2-klein-4b",
+      "fields": [
+        "/tasks"
+      ]
+    },
+    {
       "id": "deepseek-chat-v3-0324",
       "fields": [
         "/description",
@@ -1182,19 +1188,15 @@
       ]
     }
   ],
-  "observedAt": "2026-11-22T16:14:10.390Z",
+  "observedAt": "2026-11-22T18:31:15.211Z",
   "extraFields": [
     {
       "field": "/parameters/totalBillions",
-      "modelId": "recursive-flint"
+      "modelId": "nanbeige4-3-33b"
     },
     {
-      "field": "/parameters/activeBillions",
-      "modelId": "recursive-flint"
-    },
-    {
-      "field": "/architecture",
-      "modelId": "recursive-flint"
+      "field": "/specs/text/contextWindowTokens",
+      "modelId": "nanbeige4-3-33b"
     },
     {
       "field": "/parameters/totalBillions",
@@ -1223,15 +1225,29 @@
     {
       "field": "/specs/image/documentedSizes/0/heightPixels",
       "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/parameters/totalBillions",
+      "modelId": "recursive-flint"
+    },
+    {
+      "field": "/parameters/activeBillions",
+      "modelId": "recursive-flint"
+    },
+    {
+      "field": "/architecture",
+      "modelId": "recursive-flint"
     }
   ],
-  "extraModels": [],
+  "extraModels": [
+    "nanbeige4-3-33b"
+  ],
   "behindLatest": false,
   "fieldCoverage": 1,
   "missingModels": [],
   "modelCoverage": 1,
   "schemaVersion": 1,
-  "baselineCommit": "c8a34f75be8787d5589adaa81ea4bd8ad8dfc812",
+  "baselineCommit": "0c0b39cd554fd177b4dfe9c9c0fa6ef2d0f9d4c3",
   "totalFactCount": 19437,
   "unmappedFields": [],
   "coveredFactCount": 19437,
@@ -1239,11 +1255,11 @@
   "supersetAchieved": false,
   "pendingWithdrawals": [],
   "upstreamModelCount": 952,
-  "latestCheckedCommit": "c8a34f75be8787d5589adaa81ea4bd8ad8dfc812",
+  "latestCheckedCommit": "0c0b39cd554fd177b4dfe9c9c0fa6ef2d0f9d4c3",
   "pendingFieldWithdrawals": [],
-  "revision": 2,
-  "lastCheckedAt": null,
-  "lastSuccessfulCheckAt": "2026-11-22T16:24:38.914Z",
+  "revision": 3,
+  "lastCheckedAt": "2026-11-22T18:40:19.688Z",
+  "lastSuccessfulCheckAt": "2026-11-22T18:40:19.688Z",
   "lastCheckStatus": "valid",
   "unsupportedFields": [],
   "baselineSupersetAchieved": false
