@@ -5,5 +5,6 @@
   "npm": "@lmspeed/models",
   "pypi": "lmspeed-models",
   "crates": "lmspeed-models",
-  "go": "github.com/lmspeed/models/sdk/go"
+  "go": "github.com/lmspeed/models/sdk/go",
+  "changeSet": "378662d19f40189c8f6ac87ce5afb2865f636bd0029bc93c1d58f561eaf633ee"
 }
