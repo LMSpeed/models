@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "scope": "published-model-specs/all-types",
+  "revision": 1,
+  "dataUpdatedAt": "2026-11-22T00:00:00Z",
+  "counts": {
+    "models": 2,
+    "developers": 1
+  },
+  "sha256": "c1e5058c274134ea1e919d05c6f4f9521ec67be6209ffa3f3a1f120c18546afd",
+  "data": {
+    "models": {
+      "fixture-llm": {
+        "id": "fixture-llm",
+        "name": "Contract LLM",
+        "developerId": "fixture-lab",
+        "tasks": [
+          "text-generation",
+          "future-task"
+        ],
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "knowledgeCutoff": "2026-01",
+        "specs": {
+          "text": {
+            "contextWindowTokens": 0,
+            "maxOutputTokens": null
+          }
+        },
+        "capabilities": {
+          "reasoning": false,
+          "toolCalling": null
+        },
+        "sources": [
+          {
+            "url": "https://example.org/fixture",
+            "fields": [
+              "/specs/text/contextWindowTokens"
+            ],
+            "scope": "model",
+            "checkedAt": "2026-11-22T00:00:00Z"
+          }
+        ]
+      },
+      "fixture-image": {
+        "id": "fixture-image",
+        "name": "Contract Image",
+        "developerId": "fixture-lab",
+        "tasks": [
+          "image-generation"
+        ],
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "image"
+          ]
+        },
+        "specs": {
+          "image": {
+            "editing": null,
+            "maxPixels": 1048576
+          }
+        },
+        "capabilities": {
+          "reasoning": null,
+          "toolCalling": false
+        },
+        "sources": []
+      }
+    },
+    "developers": {
+      "fixture-lab": {
+        "id": "fixture-lab",
+        "name": "Contract Lab",
+        "website": null
+      }
+    },
+    "aliases": {
+      "schemaVersion": 1,
+      "revision": 1,
+      "namespaces": {
+        "global": {
+          "caseSensitive": false
+        },
+        "models.dev": {
+          "caseSensitive": true
+        },
+        "openrouter": {
+          "caseSensitive": true
+        }
+      },
+      "models": [
+        {
+          "namespace": "global",
+          "value": "Example LLM",
+          "canonicalId": "fixture-llm",
+          "routeKey": "example-llm",
+          "kind": "fixed",
+          "source": {
+            "url": "https://example.org/fixture"
+          }
+        },
+        {
+          "namespace": "models.dev",
+          "value": "lab/LLM",
+          "canonicalId": "fixture-llm",
+          "routeKey": "models.dev/lab/LLM",
+          "kind": "fixed",
+          "source": {
+            "url": "https://example.org/fixture"
+          }
+        },
+        {
+          "namespace": "models.dev",
+          "value": "shared",
+          "canonicalId": "fixture-llm",
+          "routeKey": "models.dev/shared",
+          "kind": "fixed",
+          "source": {
+            "url": "https://example.org/fixture"
+          }
+        },
+        {
+          "namespace": "openrouter",
+          "value": "shared",
+          "canonicalId": "fixture-image",
+          "routeKey": "openrouter/shared",
+          "kind": "fixed",
+          "source": {
+            "url": "https://example.org/fixture"
+          }
+        },
+        {
+          "namespace": "openrouter",
+          "value": "latest",
+          "canonicalId": "fixture-llm",
+          "routeKey": "openrouter/latest",
+          "kind": "moving",
+          "source": {
+            "url": "https://example.org/fixture"
+          },
+          "revision": 1
+        }
+      ],
+      "developers": [],
+      "families": []
+    },
+    "redirects": [],
+    "upstreams": []
+  }
+}

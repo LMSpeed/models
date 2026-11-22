@@ -1,0 +1,18 @@
+[package]
+name = "lmspeed-models"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+description = "Source-attributed model specifications, stable aliases and logos"
+license = "MIT"
+repository = "https://github.com/LMSpeed/models"
+homepage = "https://models.lmspeed.net"
+[dependencies]
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = "=1.0.145"
+reqwest = { version = "=0.12.24", default-features = false, features = ["json", "rustls-tls"] }
+jsonschema = { version = "=0.33.0", default-features = false }
+serde_jcs = "=0.3.0"
+sha2 = "=0.10.9"
+[dev-dependencies]
+tokio = { version = "=1.48.0", features = ["macros", "rt-multi-thread"] }

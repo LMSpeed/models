@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+[project]
+name = "lmspeed-models"
+version = "0.1.0"
+description = "Source-attributed model specifications, stable aliases and logos"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "LMSpeed"}]
+dependencies = [
+    "httpx==0.28.1",
+    "rfc8785==0.1.4",
+    "jsonschema==4.26.0",
+]
+[project.urls]
+Homepage = "https://models.lmspeed.net"
+Repository = "https://github.com/LMSpeed/models"
+[tool.hatch.build.targets.wheel]
+packages = ["src/lmspeed_models"]
+
+[dependency-groups]
+dev = [
+    "coverage==7.12.0",
+]

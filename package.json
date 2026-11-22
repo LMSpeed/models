@@ -1,0 +1,46 @@
+{
+  "name": "lmspeed-models",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.31.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "check": "biome check . && pnpm typecheck && pnpm test",
+    "build": "pnpm --filter @lmspeed/models build && pnpm --filter @lmspeed/models-site build",
+    "validate": "tsx scripts/validate.ts",
+    "sync": "tsx scripts/sync.ts",
+    "build:site": "tsx scripts/build-site.ts",
+    "deploy:site": "tsx scripts/deploy.ts",
+    "deploy:preview": "tsx scripts/deploy.ts --preview"
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.8",
+    "@effect/platform-node": "4.0.0-rc.115",
+    "@iarna/toml": "2.2.5",
+    "@playwright/test": "1.62.1",
+    "@types/node": "25.6.0",
+    "@vitest/coverage-v8": "4.1.10",
+    "alchemy": "2.0.0-beta.79",
+    "effect": "4.0.0-rc.115",
+    "quicktype-core": "26.0.0",
+    "tsup": "9.0.0",
+    "tsx": "4.23.12",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
+  },
+  "pnpm": {
+    "overrides": {
+      "@effect/platform-node-shared": "4.0.0-rc.115",
+      "@effect/sql-d1": "4.0.0-rc.115",
+      "@effect/sql-sqlite-do": "4.0.0-rc.115",
+      "@effect/vitest": "4.0.0-rc.115"
+    }
+  }
+}

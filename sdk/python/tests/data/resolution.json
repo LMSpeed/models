@@ -1,0 +1,51 @@
+[
+  {
+    "input": "fixture-llm",
+    "status": "resolved",
+    "canonicalId": "fixture-llm",
+    "expectedNamespace": "canonical"
+  },
+  {
+    "input": " Example llm ",
+    "status": "resolved",
+    "canonicalId": "fixture-llm",
+    "expectedNamespace": "global"
+  },
+  {
+    "input": "lab/LLM",
+    "namespace": "models.dev",
+    "status": "resolved",
+    "canonicalId": "fixture-llm"
+  },
+  {
+    "input": "lab/llm",
+    "namespace": "models.dev",
+    "status": "not_found",
+    "candidates": []
+  },
+  {
+    "input": "shared",
+    "status": "ambiguous",
+    "candidates": [
+      "fixture-image",
+      "fixture-llm"
+    ]
+  },
+  {
+    "input": "shared",
+    "namespace": "openrouter",
+    "status": "resolved",
+    "canonicalId": "fixture-image"
+  },
+  {
+    "input": "latest",
+    "namespace": "openrouter",
+    "status": "resolved",
+    "canonicalId": "fixture-llm"
+  },
+  {
+    "input": "fixture-llm-preview",
+    "status": "not_found",
+    "candidates": []
+  }
+]

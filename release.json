@@ -1,0 +1,9 @@
+{
+  "version": "0.1.0",
+  "schemaVersion": 1,
+  "repository": "LMSpeed/models",
+  "npm": "@lmspeed/models",
+  "pypi": "lmspeed-models",
+  "crates": "lmspeed-models",
+  "go": "github.com/lmspeed/models/sdk/go"
+}

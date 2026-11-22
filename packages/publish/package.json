@@ -1,0 +1,11 @@
+{
+  "name": "@lmspeed/models-publish",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": {
+    "@lmspeed/models-core": "workspace:*",
+    "@lobehub/icons-static-svg": "1.105.0",
+    "fast-xml-parser": "5.9.3"
+  }
+}

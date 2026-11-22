@@ -1,0 +1,48 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!pnpm-lock.yaml",
+      "!data",
+      "!fixtures",
+      "!coverage",
+      "!sdk/python",
+      "!sdk/rust",
+      "!sdk/go",
+      "!**/dist",
+      "!**/node_modules",
+      "!**/.astro",
+      "!**/.wrangler",
+      "!.cache",
+      "!playwright-report",
+      "!test-results"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "linter": {
+    "rules": {
+      "recommended": true
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  }
+}
