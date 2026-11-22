@@ -30,3 +30,6 @@ coverage/tests/
 playwright-report/
 test-results/
 .coverage
+
+coverage/*
+!coverage/models-dev.json
