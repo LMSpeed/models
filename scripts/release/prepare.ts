@@ -1,5 +1,6 @@
 import { readdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { api, run } from '../lib/process';
+import { preparedConfig } from './prepared';
 import { goModulePath, nextVersion, pythonVersion } from './state';
 
 const repository = process.env.GITHUB_REPOSITORY ?? 'LMSpeed/models';
@@ -31,7 +32,8 @@ const branch = 'automation/sdk-version';
 run('git', ['switch', '-C', branch]);
 await writeFile(
   'release.json',
-  JSON.stringify({ ...config, version }, null, 2) + '\n',
+  JSON.stringify(preparedConfig({ ...config, version }, changes), null, 2) +
+    '\n',
 );
 const edits: [string, (text: string) => string][] = [
   [
