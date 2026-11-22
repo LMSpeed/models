@@ -54,8 +54,13 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm exec tsx scripts/smoke.ts
       - if: steps.control.outputs.mode == 'publish'
+        id: crates-auth
+        name: Obtain a short-lived crates.io publishing identity
+        continue-on-error: true
+        uses: rust-lang/crates-io-auth-action@3268eb413133e2960fa4ae0e963ca76380c54cd9
+      - if: steps.control.outputs.mode == 'publish'
         name: Publish missing packages and verify actual public installations
         run: pnpm exec tsx scripts/release/publish.ts
         env:
           GH_TOKEN: ${{ github.token }}
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ steps.crates-auth.outputs.token }}
