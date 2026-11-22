@@ -8,6 +8,8 @@ import {
   type ReleaseState,
   recoverableEcosystems,
   releaseComplete,
+  releaseUpdate,
+  stateFromBody,
 } from './state';
 
 const initial: ReleaseState = {
@@ -23,6 +25,19 @@ const initial: ReleaseState = {
   },
 };
 describe('user receives one recoverable release across all four ecosystems', () => {
+  it('user resumes a partial release without losing its immutable tag', () => {
+    // Given an allocated release awaiting its remaining registries.
+    const state = finishAttempt(beginAttempt(initial, 'npm'), 'npm', true);
+    // When its persisted release metadata is updated after a registry attempt.
+    const update = releaseUpdate('Install the verified packages.', state);
+    // Then the GitHub update names the original tag and commit; omitted tags reset real draft releases to untagged.
+    expect(update).toMatchObject({
+      tag_name: 'sdk-v1.2.3',
+      target_commitish: initial.commit,
+      draft: true,
+    });
+    expect(stateFromBody(update.body)).toEqual(state);
+  });
   it('user defers one registry without exhausting its retry budget or claiming a complete release', () => {
     // Given three verified registries and a deferred Python account setup.
     let state = structuredClone(initial);

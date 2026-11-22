@@ -10,6 +10,7 @@ import {
   pythonVersion,
   type ReleaseState,
   releaseComplete,
+  releaseUpdate,
   stateFromBody,
 } from './state';
 import { verifyInstall } from './verify-install';
@@ -137,7 +138,7 @@ const save = () => {
   release = api<Release>(
     `repos/${repository}/releases/${release.id}`,
     'PATCH',
-    { body: bodyWithState(notes, state), draft: !releaseComplete(state) },
+    releaseUpdate(notes, state),
   );
 };
 async function remote(path: string): Promise<unknown | undefined> {
