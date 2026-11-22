@@ -1,6 +1,8 @@
+import { readFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { server } from '../../scripts/http-fixture';
-import { Catalog, Client } from './src/index';
+import { Catalog, Client, ModelsError } from './src/index';
 
 let base = '';
 beforeAll(async () => {
@@ -15,6 +17,65 @@ afterAll(async () => {
   );
 });
 describe('user can refresh real HTTP catalogue files without losing cached data', () => {
+  it('user distinguishes interrupted response bodies and retains the last usable catalogue', async () => {
+    // Given a real HTTP server that can flush headers and then stop sending its body.
+    const snapshot = await readFile(
+      new URL('../../fixtures/contracts/valid.json', import.meta.url),
+      'utf8',
+    );
+    let stall = false;
+    let partial = () => {};
+    const boundary = createServer((_request, response) => {
+      response.writeHead(200, { 'content-type': 'application/json' });
+      if (stall) {
+        response.write('{');
+        partial();
+      } else response.end(snapshot);
+    });
+    await new Promise<void>((resolve) =>
+      boundary.listen(0, '127.0.0.1', resolve),
+    );
+    const address = boundary.address();
+    if (!address || typeof address === 'string')
+      throw new Error('Missing test listener');
+    const client = new Client({
+      baseUrl: `http://127.0.0.1:${address.port}`,
+      timeoutMs: 100,
+    });
+    try {
+      const previous = await client.refresh();
+      stall = true;
+      // When a deadline or explicit cancellation interrupts a response after its headers arrived.
+      for (const read of [
+        () => client.refresh(),
+        () => client.logos(),
+        () => client.coverage(),
+      ])
+        await expect(read()).rejects.toMatchObject({
+          name: 'ModelsError',
+          code: 'timeout',
+        });
+      const controller = new AbortController();
+      const started = new Promise<void>((resolve) => {
+        partial = resolve;
+      });
+      const pending = client
+        .refresh(controller.signal)
+        .catch((error: unknown) => error);
+      await started;
+      controller.abort();
+      const cancelled = await pending;
+      // Then every body failure uses the documented error and the loaded offline revision survives.
+      expect(cancelled).toBeInstanceOf(ModelsError);
+      expect(cancelled).toMatchObject({ code: 'cancelled' });
+      expect(client.current).toBe(previous);
+    } finally {
+      boundary.closeAllConnections();
+      await new Promise<void>((resolve, reject) =>
+        boundary.close((error) => (error ? reject(error) : resolve())),
+      );
+    }
+  });
   it('user revalidates a loaded revision and reads sources, logo metadata and coverage', async () => {
     // Given an HTTP server whose success contract matches the verified static preview.
     const client = new Client({ baseUrl: `${base}/valid` });
