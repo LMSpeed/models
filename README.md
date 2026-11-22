@@ -1,10 +1,14 @@
 # LMSpeed Models
 
+[![Data revision](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmodels.lmspeed.net%2Fdeployment.json&query=%24.revision&label=data%20revision)](https://models.lmspeed.net/deployment.json) [![SDK version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FLMSpeed%2Fmodels%2Fmain%2Frelease.json&query=%24.version&label=SDK)](release.json)
+
 An open, source-attributed database of AI model specifications, maintained in LMSpeed and distributed as static files. Language, image, audio, video, embedding, reranking and other model types share one identity and data contract. Providers, prices, benchmarks and user data are outside this dataset.
 
-**Implementation status:** the source integration is under review and package releases are not published yet. The checked-in baseline currently comes from an isolated LMSpeed import and will be replaced by the authoritative source export before the first production data release. Preview: https://models-preview.lmspeed.net.
+**Data status:** this repository now contains the authoritative export from [LMSpeed](https://lmspeed.net/api/v1/model-specs), including independently reviewed language and image specifications. The complete models.dev model-body baseline is mapped; conflicts remain visible and the coverage report does not yet declare the superset target achieved. Preview: https://models-preview.lmspeed.net.
 
-The intended production endpoint is **https://models.lmspeed.net**. Deployment and package publication are tracked by Actions and the release manifests. SDK versions are independent of the data `revision`.
+**Package status:** registry publication is in progress. Python and Rust publication are explicitly deferred; their clients and contract checks remain included in CI. The immutable release manifest records each registry separately.
+
+The production endpoint is **https://models.lmspeed.net** (initial deployment in progress). Deployment and package publication are tracked by Actions and the release manifests. SDK versions are independent of the data `revision`.
 
 ```sh
 curl https://models.lmspeed.net/v1/api.json

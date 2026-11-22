@@ -1,7 +1,7 @@
 # Third-party model metadata
 
 Source: https://github.com/anomalyco/models.dev
-Baseline: 482544f6541fd88f0506b713fb85712ea6b8e99a
+The adopted baseline and per-field revisions are recorded in [upstreams.json](upstreams.json) and each model’s sources.
 
 Only model-body specifications are imported. Prices, hosting API configuration and benchmarks are excluded. Sources preserve exact upstream paths, fields, commit and observation times.
 

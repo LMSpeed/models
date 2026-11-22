@@ -14,10 +14,10 @@
     "openai/gpt-4": "gpt-4",
     "openai/gpt-5": "gpt-5",
     "openai/tts-1": "tts-1",
-    "xai/grok-4.3": "grok-4-3",
-    "xai/grok-4.5": "grok-4-5",
-    "xai/grok-4.6": "grok-4-6",
-    "xai/grok-4.7": "grok-4-7",
+    "xai/grok-4.3": "xai-grok-4-3",
+    "xai/grok-4.5": "xai-grok-4-5",
+    "xai/grok-4.6": "xai-grok-4-6",
+    "xai/grok-4.7": "xai-grok-4-7",
     "xai/grok-tts": "grok-tts",
     "baidu/cobuddy": "cobuddy",
     "butler/cicero": "cicero",
@@ -52,7 +52,7 @@
     "deepgram/nova-3": "nova-3",
     "meta/muse-video": "muse-video",
     "openai/tts-1-hd": "tts-1-hd",
-    "recursive/flint": "flint",
+    "recursive/flint": "recursive-flint",
     "sakana/fugu-max": "fugu-max",
     "sarvam/sarvam-m": "sarvam-m",
     "unbiased/pareto": "pareto",
@@ -63,7 +63,7 @@
     "zhipuai/glm-5.1": "glm-5-1",
     "zhipuai/glm-5.2": "glm-5-2",
     "zhipuai/glm-5.3": "glm-5-3",
-    "ai21/jamba-large": "jamba-large",
+    "ai21/jamba-large": "jamba-large-1-7",
     "alibaba/qwen-max": "qwen-max",
     "alibaba/qwen3-8b": "qwen3-8b",
     "alibaba/qwq-plus": "qwq-plus",
@@ -111,8 +111,8 @@
     "tencent/hy-mt2-7b": "hy-mt2-7b",
     "tencent/hy4-flash": "hy4-flash",
     "thenlper/gte-base": "gte-base",
-    "voyageai/rerank-3": "rerank-3",
-    "voyageai/voyage-4": "voyage-4",
+    "voyageai/rerank-3": "voyageai-rerank-3",
+    "voyageai/voyage-4": "voyageai-voyage-4",
     "writer/palmyra-x4": "palmyra-x4",
     "writer/palmyra-x5": "palmyra-x5",
     "xai/grok-4.1-fast": "grok-4-1-fast",
@@ -184,7 +184,7 @@
     "intfloat/e5-base-v2": "e5-base-v2",
     "kuaishou/kling-v2.6": "kling-v2-6",
     "kuaishou/kling-v4.0": "kling-v4-0",
-    "liquid/lfm2-24b-a2b": "lfm2-24b-a2b",
+    "liquid/lfm2-24b-a2b": "lfm-2-24b-a2b",
     "meituan/longcat-2.0": "longcat-2-0",
     "meituan/longcat-2.5": "longcat-2-5",
     "meta/muse-ember-1.0": "muse-ember-1-0",
@@ -215,7 +215,7 @@
     "typesafe/jev-1.14.0": "jev-1-14-0",
     "typesafe/jev-latest": "jev-latest",
     "upstage/solar-mini4": "solar-mini4",
-    "voyageai/rerank-2.5": "rerank-2-5",
+    "voyageai/rerank-2.5": "voyageai-rerank-2-5",
     "xiaomi/mimo-v2-omni": "mimo-v2-omni",
     "zhipuai/cogvideox-3": "cogvideox-3",
     "zhipuai/embedding-2": "embedding-2",
@@ -232,7 +232,7 @@
     "amazon/nova-micro-v1": "nova-micro-v1",
     "cohere/tiny-aya-fire": "tiny-aya-fire",
     "deepseek/deepseek-r1": "deepseek-r1",
-    "deepseek/deepseek-v3": "deepseek-v3",
+    "deepseek/deepseek-v3": "deepseek-chat",
     "elevenlabs/eleven_v3": "eleven-v3",
     "elevenlabs/eleven_v4": "eleven-v4",
     "elevenlabs/scribe_v2": "scribe-v2",
@@ -244,7 +244,7 @@
     "meta/muse-spark-open": "muse-spark-open",
     "meta/muse-wonder-1.0": "muse-wonder-1-0",
     "microsoft/mai-code-2": "mai-code-2",
-    "microsoft/phi-4-mini": "phi-4-mini",
+    "microsoft/phi-4-mini": "phi-4-mini-instruct",
     "minimax/MiniMax-M2.1": "minimax-m2-1",
     "minimax/MiniMax-M2.5": "minimax-m2-5",
     "minimax/MiniMax-M2.7": "minimax-m2-7",
@@ -307,19 +307,19 @@
     "google/gemma-4-E4B-it": "gemma-4-e4b-it",
     "heygen/heygen-video-1": "heygen-video-1",
     "heygen/heygen-voice-1": "heygen-voice-1",
-    "ibm/granite-4-h-micro": "granite-4-h-micro",
+    "ibm/granite-4-h-micro": "granite-4-0-h-micro",
     "ibm/granite-4-h-small": "granite-4-h-small",
     "inception/mercury-2.5": "mercury-2-5",
     "inworld/inworld-tts-2": "inworld-tts-2",
     "leonardo/lucid-origin": "lucid-origin",
-    "meta/llama-guard-3-8b": "llama-guard-3-8b",
+    "meta/llama-guard-3-8b": "llama-guard-3",
     "meta/muse-glimmer-30b": "muse-glimmer-30b",
     "meta/muse-wonder-full": "muse-wonder-full",
     "microsoft/mai-voice-2": "mai-voice-2",
     "minimax/image-01-live": "image-01-live",
     "minimax/speech-2.8-hd": "speech-2-8-hd",
     "mistral/devstral-2512": "devstral-2512",
-    "mistral/ministral-14b": "ministral-14b",
+    "mistral/ministral-14b": "ministral-14b-2512",
     "mistral/mistral-embed": "mistral-embed",
     "mistral/mistral-large": "mistral-large",
     "openai/gpt-audio-mini": "gpt-audio-mini",
@@ -350,7 +350,7 @@
     "cohere/rerank-v5.0-pro": "rerank-v5-0-pro",
     "cohere/tiny-aya-global": "tiny-aya-global",
     "deepseek/deepseek-chat": "deepseek-chat",
-    "deepseek/deepseek-v3.1": "deepseek-v3-1",
+    "deepseek/deepseek-v3.1": "deepseek-chat-v3-1",
     "deepseek/deepseek-v3.2": "deepseek-v3-2",
     "google/gemini-3.8-live": "gemini-3-8-live",
     "google/gemini-4-carbon": "gemini-4-carbon",
@@ -374,15 +374,15 @@
     "stepfun/step-3.7-flash": "step-3-7-flash",
     "stepfun/step-5-preview": "step-5-preview",
     "tencent/hy-mt2-30b-a3b": "hy-mt2-30b-a3b",
-    "voyageai/rerank-3-lite": "rerank-3-lite",
-    "voyageai/voyage-4-lite": "voyage-4-lite",
-    "voyageai/voyage-code-4": "voyage-code-4",
+    "voyageai/rerank-3-lite": "voyageai-rerank-3-lite",
+    "voyageai/voyage-4-lite": "voyageai-voyage-4-lite",
+    "voyageai/voyage-code-4": "voyageai-voyage-code-4",
     "whereisai/uae-large-v1": "uae-large-v1",
     "xai/grok-imagine-image": "grok-imagine-image",
-    "xai/grok-imagine-video": "grok-imagine-video",
+    "xai/grok-imagine-video": "xai-grok-imagine-video",
     "xiaomi/mimo-v2.6-flash": "mimo-v2-6-flash",
     "zhipuai/glm-4.6v-flash": "glm-4-6v-flash",
-    "zhipuai/glm-4.7-flashx": "glm-4-7-flashx",
+    "zhipuai/glm-4.7-flashx": "glm-4-7-flash",
     "aion-labs/aion-3.0-mini": "aion-3-0-mini",
     "alibaba/qwen-omni-turbo": "qwen-omni-turbo",
     "alibaba/qwen3-235b-a22b": "qwen3-235b-a22b",
@@ -406,9 +406,9 @@
     "google/gemini-3.7-flash": "gemini-3-7-flash",
     "google/gemini-3.8-flash": "gemini-3-8-flash",
     "kuaishou/kling-image-o1": "kling-image-o1",
-    "kuaishou/kling-v3.0-pro": "kling-v3-0-pro",
-    "kuaishou/kling-v3.0-std": "kling-v3-0-std",
-    "kuaishou/kling-video-o1": "kling-video-o1",
+    "kuaishou/kling-v3.0-pro": "kuaishou-kling-v3-0-pro",
+    "kuaishou/kling-v3.0-std": "kuaishou-kling-v3-0-std",
+    "kuaishou/kling-video-o1": "kuaishou-kling-video-o1",
     "lykon/dreamshaper-8-lcm": "dreamshaper-8-lcm",
     "microsoft/mai-image-2.5": "mai-image-2-5",
     "microsoft/mai-image-2.6": "mai-image-2-6",
@@ -420,7 +420,7 @@
     "mistral/mistral-large-4": "mistral-large-4",
     "mistral/mistral-ocr-4-1": "mistral-ocr-4-1",
     "moonshotai/kimi-k2-0905": "kimi-k2-0905",
-    "nvidia/mistral-nemotron": "mistral-nemotron",
+    "nvidia/mistral-nemotron": "nvidia-mistral-nemotron",
     "openai/gpt-5-image-mini": "gpt-5-image-mini",
     "openai/gpt-5-search-api": "gpt-5-search-api",
     "openai/gpt-6-astra-fast": "gpt-6-astra-fast",
@@ -431,7 +431,7 @@
     "openai/whisper-large-v3": "whisper-large-v3",
     "sao10k/l3.1-euryale-70b": "l3-1-euryale-70b",
     "sao10k/l3.3-euryale-70b": "l3-3-euryale-70b",
-    "voyageai/voyage-4-large": "voyage-4-large",
+    "voyageai/voyage-4-large": "voyageai-voyage-4-large",
     "alibaba/qwen3-coder-next": "qwen3-coder-next",
     "alibaba/qwen3-coder-plus": "qwen3-coder-plus",
     "alibaba/qwen3.8-max-0902": "qwen3-8-max-0902",
@@ -468,7 +468,7 @@
     "swiss-ai/apertus-v1.5-8b": "apertus-v1-5-8b",
     "thinkingmachines/inkling": "inkling",
     "undi95/remm-slerp-l2-13b": "remm-slerp-l2-13b",
-    "voyageai/rerank-2.5-lite": "rerank-2-5-lite",
+    "voyageai/rerank-2.5-lite": "voyageai-rerank-2-5-lite",
     "alibaba/gte-large-en-v1.5": "gte-large-en-v1-5",
     "alibaba/qwen3-coder-flash": "qwen3-coder-flash",
     "alibaba/qwen3-max-preview": "qwen3-max-preview",
@@ -493,7 +493,7 @@
     "cohere/c4ai-aya-vision-8b": "c4ai-aya-vision-8b",
     "cohere/embed-english-v3.0": "embed-english-v3-0",
     "deepseek/deepseek-r1-0528": "deepseek-r1-0528",
-    "deepseek/deepseek-v3-0324": "deepseek-v3-0324",
+    "deepseek/deepseek-v3-0324": "deepseek-chat-v3-0324",
     "google/gemini-2.5-pro-tts": "gemini-2-5-pro-tts",
     "google/gemini-3-pro-image": "gemini-3-pro-image",
     "google/gemini-embedding-2": "gemini-embedding-2",
@@ -528,7 +528,7 @@
     "alibaba/qwen2.5-coder-0.5b": "qwen2-5-coder-0-5b",
     "alibaba/qwen3-embedding-4b": "qwen3-embedding-4b",
     "alibaba/qwen3-embedding-8b": "qwen3-embedding-8b",
-    "alibaba/qwen3.8-flash-next": "qwen3-8-flash-next",
+    "alibaba/qwen3.8-flash-next": "qwen3-8-flash",
     "alibaba/qwen3.8-omni-flash": "qwen3-8-omni-flash",
     "alibaba/wan3.0-video-prime": "wan3-0-video-prime",
     "anthropic/claude-fable-5-1": "claude-fable-5-1",
@@ -539,9 +539,9 @@
     "cohere/c4ai-aya-expanse-8b": "c4ai-aya-expanse-8b",
     "cohere/c4ai-aya-vision-32b": "c4ai-aya-vision-32b",
     "cohere/command-r7b-12-2024": "command-r7b-12-2024",
-    "cohere/north-mini-code-1-0": "north-mini-code-1-0",
+    "cohere/north-mini-code-1-0": "north-mini-code",
     "cohere/rerank-english-v3.0": "rerank-english-v3-0",
-    "deepseek/deepseek-reasoner": "deepseek-reasoner",
+    "deepseek/deepseek-reasoner": "deepseek-v3-2",
     "deepseek/deepseek-v4-flash": "deepseek-v4-flash",
     "elevenlabs/eleven_flash_v2": "eleven-flash-v2",
     "elevenlabs/eleven_turbo_v2": "eleven-turbo-v2",
@@ -570,7 +570,7 @@
     "mistral/mistral-large-2512": "mistral-large-2512",
     "mistral/mistral-medium-3-5": "mistral-medium-3-5",
     "mistral/mistral-medium-3.1": "mistral-medium-3-1",
-    "mistral/mistral-small-2506": "mistral-small-2506",
+    "mistral/mistral-small-2506": "mistral-small-3-2-24b-instruct",
     "mistral/mistral-small-2603": "mistral-small-2603",
     "mistral/pixtral-large-2502": "pixtral-large-2502",
     "motif-technologies/motif-3": "motif-3",
@@ -588,8 +588,8 @@
     "recraft/recraft-v4.1-flash": "recraft-v4-1-flash",
     "sourceful/riverflow-v2-pro": "riverflow-v2-pro",
     "xai/grok-imagine-image-2.0": "grok-imagine-image-2-0",
-    "xai/grok-imagine-video-1.5": "grok-imagine-video-1-5",
-    "alibaba/qwen2.5-7b-instruct": "qwen2-5-7b-instruct",
+    "xai/grok-imagine-video-1.5": "xai-grok-imagine-video-1-5",
+    "alibaba/qwen2.5-7b-instruct": "qwen-2-5-7b-instruct",
     "alibaba/qwen3-reranker-0.6b": "qwen3-reranker-0-6b",
     "alibaba/qwen3.6-max-preview": "qwen3-6-max-preview",
     "alibaba/qwen3.8-max-preview": "qwen3-8-max-preview",
@@ -623,8 +623,8 @@
     "microsoft/mai-voice-2-flash": "mai-voice-2-flash",
     "mistral/devstral-small-2507": "devstral-small-2507",
     "mistral/mistral-medium-2505": "mistral-medium-2505",
-    "mistral/mistral-medium-2604": "mistral-medium-2604",
-    "moonshotai/kimi-k2-instruct": "kimi-k2-instruct",
+    "mistral/mistral-medium-2604": "mistral-medium-3-5",
+    "moonshotai/kimi-k2-instruct": "kimi-k2",
     "moonshotai/kimi-k2-thinking": "kimi-k2-thinking",
     "nvidia/parakeet-tdt-0.6b-v3": "parakeet-tdt-0-6b-v3",
     "openai/gpt-realtime-whisper": "gpt-realtime-whisper",
@@ -633,7 +633,7 @@
     "recraft/recraft-v4.1-vector": "recraft-v4-1-vector",
     "resemble-ai/chatterbox-nano": "chatterbox-nano",
     "sourceful/riverflow-v2-fast": "riverflow-v2-fast",
-    "stepfun/step-3.5-flash-2603": "step-3-5-flash-2603",
+    "stepfun/step-3.5-flash-2603": "step-3-5-flash",
     "thedrummer/cydonia-24b-v4.1": "cydonia-24b-v4-1",
     "turion/turion-extract-alpha": "turion-extract-alpha",
     "xai/grok-4.1-fast-reasoning": "grok-4-1-fast-reasoning",
@@ -669,7 +669,7 @@
     "google/gemini-omni-1.1-flash": "gemini-omni-1-1-flash",
     "google/gemini-omni-1.2-flash": "gemini-omni-1-2-flash",
     "inworld/inworld-tts-1.5-mini": "inworld-tts-1-5-mini",
-    "liquid/lfm2.5-embedding-350m": "lfm2-5-embedding-350m",
+    "liquid/lfm2.5-embedding-350m": "lfm-2-5-embedding-350m",
     "microsoft/mai-code-1.1-flash": "mai-code-1-1-flash",
     "microsoft/mai-transcribe-1.5": "mai-transcribe-1-5",
     "minimax/MiniMax-H3-Highspeed": "minimax-h3-highspeed",
@@ -677,11 +677,11 @@
     "mistral/devstral-medium-2507": "devstral-medium-2507",
     "mistral/magistral-small-2506": "magistral-small-2506",
     "mistral/magistral-small-2509": "magistral-small-2509",
-    "mistral/mistral-large-latest": "mistral-large-latest",
-    "mistral/mistral-small-latest": "mistral-small-latest",
+    "mistral/mistral-large-latest": "mistral-large-2512",
+    "mistral/mistral-small-latest": "mistral-small-2603",
     "mistral/pixtral-large-latest": "pixtral-large-latest",
     "mistral/voxtral-mini-3b-2507": "voxtral-mini-3b-2507",
-    "mistral/voxtral-small-latest": "voxtral-small-latest",
+    "mistral/voxtral-small-latest": "voxtral-small-24b-2507",
     "moonshotai/kimi-k2.8-preview": "kimi-k2-8-preview",
     "nomic-ai/nomic-embed-text-v1": "nomic-embed-text-v1",
     "nvidia/nemotron-3.5-embed-1b": "nemotron-3-5-embed-1b",
@@ -701,11 +701,11 @@
     "bytedance-seed/seed-audio-1.0": "seed-audio-1-0",
     "bytedance-seed/seed-character": "seed-character",
     "canopylabs/orpheus-v1-english": "orpheus-v1-english",
-    "cohere/command-a-plus-05-2026": "command-a-plus-05-2026",
+    "cohere/command-a-plus-05-2026": "command-a-plus",
     "cohere/command-r-plus-08-2024": "command-r-plus-08-2024",
     "deepreinforce/ornith-1.0-397b": "ornith-1-0-397b",
     "deepreinforce/ornith-1.5-122b": "ornith-1-5-122b",
-    "deepseek/deepseek-v4-pro-0423": "deepseek-v4-pro-0423",
+    "deepseek/deepseek-v4-pro-0423": "deepseek-v4-pro",
     "deepseek/deepseek-v4-pro-0813": "deepseek-v4-pro-0813",
     "google/gemini-2.5-flash-image": "gemini-2-5-flash-image",
     "google/gemini-2.5-pro-preview": "gemini-2-5-pro-preview",
@@ -719,7 +719,7 @@
     "microsoft/mai-image-2.6-flash": "mai-image-2-6-flash",
     "microsoft/mai-image-2.7-flash": "mai-image-2-7-flash",
     "microsoft/mai-voice-2.1-flash": "mai-voice-2-1-flash",
-    "mistral/mistral-medium-latest": "mistral-medium-latest",
+    "mistral/mistral-medium-latest": "mistral-medium-3-5",
     "mistral/voxtral-mini-tts-2603": "voxtral-mini-tts-2603",
     "nvidia/nemotron-3.5-lightning": "nemotron-3-5-lightning",
     "openai/gpt-4o-mini-transcribe": "gpt-4o-mini-transcribe",
@@ -732,7 +732,7 @@
     "openai/text-embedding-3-small": "text-embedding-3-small",
     "openai/text-embedding-ada-002": "text-embedding-ada-002",
     "openai/whisper-large-v3-turbo": "whisper-large-v3-turbo",
-    "openbmb/minicpm-v-4.7-35b-a3b": "minicpm-v-4-7-35b-a3b",
+    "openbmb/minicpm-v-4.7-35b-a3b": "minicpm-v-4-7",
     "perplexity/pplx-embed-v1-0.6b": "pplx-embed-v1-0-6b",
     "recraft/recraft-v4-pro-vector": "recraft-v4-pro-vector",
     "recraft/recraft-v4-styles-pro": "recraft-v4-styles-pro",
@@ -754,9 +754,9 @@
     "kuaishou/kling-image-v3.0-omni": "kling-image-v3-0-omni",
     "meta/muse-voice-transcribe-1.0": "muse-voice-transcribe-1-0",
     "microsoft/microsoft-decision-1": "microsoft-decision-1",
-    "minimax/MiniMax-M2.5-highspeed": "minimax-m2-5-highspeed",
-    "minimax/MiniMax-M2.7-highspeed": "minimax-m2-7-highspeed",
-    "mistral/devstral-medium-latest": "devstral-medium-latest",
+    "minimax/MiniMax-M2.5-highspeed": "minimax-m2-5",
+    "minimax/MiniMax-M2.7-highspeed": "minimax-m2-7",
+    "mistral/devstral-medium-latest": "devstral-2512",
     "mistral/mixtral-8x22b-instruct": "mixtral-8x22b-instruct",
     "mistral/voxtral-small-24b-2507": "voxtral-small-24b-2507",
     "nomic-ai/nomic-embed-text-v1.5": "nomic-embed-text-v1-5",
@@ -765,7 +765,7 @@
     "perplexity/sonar-deep-research": "sonar-deep-research",
     "perplexity/sonar-reasoning-pro": "sonar-reasoning-pro",
     "thinkingmachines/inkling-small": "inkling-small",
-    "voyageai/voyage-multimodal-3.5": "voyage-multimodal-3-5",
+    "voyageai/voyage-multimodal-3.5": "voyageai-voyage-multimodal-3-5",
     "xai/grok-imagine-image-quality": "grok-imagine-image-quality",
     "alibaba/qwen-audio-3.0-tts-plus": "qwen-audio-3-0-tts-plus",
     "alibaba/qwen2-5-vl-72b-instruct": "qwen2-5-vl-72b-instruct",
@@ -777,18 +777,18 @@
     "cohere/command-a-vision-07-2025": "command-a-vision-07-2025",
     "cohere/embed-english-light-v3.0": "embed-english-light-v3-0",
     "cohere/rerank-multilingual-v3.0": "rerank-multilingual-v3-0",
-    "deepseek/deepseek-v4-flash-0423": "deepseek-v4-flash-0423",
+    "deepseek/deepseek-v4-flash-0423": "deepseek-v4-flash",
     "deepseek/deepseek-v4-flash-0731": "deepseek-v4-flash-0731",
     "google/gemini-flash-lite-latest": "gemini-flash-lite-latest",
     "google/veo-3.1-generate-preview": "veo-3-1-generate-preview",
-    "meta/llama-4-scout-17b-instruct": "llama-4-scout-17b-instruct",
+    "meta/llama-4-scout-17b-instruct": "llama-4-scout",
     "minimax/MiniMax-Hailuo-2.3-Fast": "minimax-hailuo-2-3-fast",
     "mistral/magistral-medium-latest": "magistral-medium-latest",
     "mistral/mistral-moderation-2603": "mistral-moderation-2603",
     "mixedbread/mxbai-embed-large-v1": "mxbai-embed-large-v1",
     "opendatalab/mineru2.5-2509-1.2b": "mineru2-5-2509-1-2b",
     "recraft/recraft-v4.1-pro-vector": "recraft-v4-1-pro-vector",
-    "xai/grok-imagine-video-1.5-lite": "grok-imagine-video-1-5-lite",
+    "xai/grok-imagine-video-1.5-lite": "xai-grok-imagine-video-1-5-lite",
     "xiaomi/mimo-v2.5-pro-ultraspeed": "mimo-v2-5-pro-ultraspeed",
     "xiaomi/mimo-v2.5-tts-voiceclone": "mimo-v2-5-tts-voiceclone",
     "xiaomi/mimo-v2.6-pro-ultraspeed": "mimo-v2-6-pro-ultraspeed",
@@ -836,13 +836,13 @@
     "inclusionai/ming-image-0.1-design": "ming-image-0-1-design",
     "inference-net/schematron-v2-small": "schematron-v2-small",
     "inference-net/schematron-v2-turbo": "schematron-v2-turbo",
-    "moonshotai/kimi-k2-thinking-turbo": "kimi-k2-thinking-turbo",
+    "moonshotai/kimi-k2-thinking-turbo": "kimi-k2-thinking",
     "nvidia/llama-nemotron-embed-1b-v2": "llama-nemotron-embed-1b-v2",
     "nvidia/nemotron-3-super-120b-a12b": "nemotron-3-super-120b-a12b",
     "nvidia/nemotron-3-ultra-550b-a55b": "nemotron-3-ultra-550b-a55b",
     "nvidia/nemotron-cascade-2-30b-a3b": "nemotron-cascade-2-30b-a3b",
     "upstage/solar-10.7b-instruct-v1.0": "solar-10-7b-instruct-v1-0",
-    "alibaba/qwen2.5-coder-32b-instruct": "qwen2-5-coder-32b-instruct",
+    "alibaba/qwen2.5-coder-32b-instruct": "qwen-2-5-coder-32b-instruct",
     "anthropic/claude-opus-4-1-20250805": "claude-opus-4-1-20250805",
     "anthropic/claude-opus-4-5-20251101": "claude-opus-4-5-20251101",
     "anthropic/claude-sonnet-4-20250514": "claude-sonnet-4-20250514",
@@ -854,8 +854,8 @@
     "google/gemini-3.1-flash-lite-image": "gemini-3-1-flash-lite-image",
     "meta/llama-3.2-11b-vision-instruct": "llama-3-2-11b-vision-instruct",
     "meta/llama-3.2-90b-vision-instruct": "llama-3-2-90b-vision-instruct",
-    "meta/llama-4-maverick-17b-instruct": "llama-4-maverick-17b-instruct",
-    "minimax/MiniMax-H3-Image-Highspeed": "minimax-h3-image-highspeed",
+    "meta/llama-4-maverick-17b-instruct": "llama-4-maverick",
+    "minimax/MiniMax-H3-Image-Highspeed": "minimax-h3-image",
     "minimax/MiniMax-M3.1-Flash-Preview": "minimax-m3-1-flash-preview",
     "mistral/ministral-8b-instruct-2410": "ministral-8b-instruct-2410",
     "mistral/mixtral-8x7b-instruct-v0.1": "mixtral-8x7b-instruct-v0-1",
@@ -874,7 +874,7 @@
     "google/gemini-3.1-flash-tts-preview": "gemini-3-1-flash-tts-preview",
     "google/gemini-robotics-er-2-preview": "gemini-robotics-er-2-preview",
     "microsoft/phi-4-multimodal-instruct": "phi-4-multimodal-instruct",
-    "moonshotai/kimi-k2.7-code-highspeed": "kimi-k2-7-code-highspeed",
+    "moonshotai/kimi-k2.7-code-highspeed": "kimi-k2-7-code",
     "nousresearch/hermes-3-llama-3.1-70b": "hermes-3-llama-3-1-70b",
     "nvidia/nemotron-3.5-super-120b-a12b": "nemotron-3-5-super-120b-a12b",
     "perplexity/pplx-embed-context-v1-4b": "pplx-embed-context-v1-4b",
@@ -897,31 +897,31 @@
     "google/gemini-3.1-flash-live-preview": "gemini-3-1-flash-live-preview",
     "google/veo-3.1-fast-generate-preview": "veo-3-1-fast-generate-preview",
     "google/veo-3.1-lite-generate-preview": "veo-3-1-lite-generate-preview",
-    "mistral/ministral-3-3b-instruct-2512": "ministral-3-3b-instruct-2512",
-    "mistral/ministral-3-8b-instruct-2512": "ministral-3-8b-instruct-2512",
+    "mistral/ministral-3-3b-instruct-2512": "ministral-3b-2512",
+    "mistral/ministral-3-8b-instruct-2512": "ministral-8b-2512",
     "nousresearch/hermes-2-pro-llama-3-8b": "hermes-2-pro-llama-3-8b",
     "nousresearch/hermes-3-llama-3.1-405b": "hermes-3-llama-3-1-405b",
     "nvidia/llama-3.1-nemotron-ultra-253b": "llama-3-1-nemotron-ultra-253b",
     "nvidia/llama-nemotron-embed-vl-1b-v2": "llama-nemotron-embed-vl-1b-v2",
     "recraft/recraft-v4-styles-pro-vector": "recraft-v4-styles-pro-vector",
-    "alibaba/qwen3-235b-a22b-instruct-2507": "qwen3-235b-a22b-instruct-2507",
+    "alibaba/qwen3-235b-a22b-instruct-2507": "qwen3-235b-a22b-2507",
     "alibaba/qwen3-235b-a22b-thinking-2507": "qwen3-235b-a22b-thinking-2507",
-    "deepseek/deepseek-r1-distill-qwen-32b": "deepseek-r1-distill-qwen-32b",
+    "deepseek/deepseek-r1-distill-qwen-32b": "deepseek-r1-distill-qwen",
     "deepseek/deepseek-v4-flash-vision-exp": "deepseek-v4-flash-vision-exp",
     "google/gemini-2.5-flash-preview-05-20": "gemini-2-5-flash-preview-05-20",
     "google/gemini-3.1-flash-image-preview": "gemini-3-1-flash-image-preview",
     "google/gemini-robotics-er-1.6-preview": "gemini-robotics-er-1-6-preview",
-    "mistral/ministral-3-14b-instruct-2512": "ministral-3-14b-instruct-2512",
+    "mistral/ministral-3-14b-instruct-2512": "ministral-14b-2512",
     "nvidia/llama-nemotron-rerank-vl-1b-v2": "llama-nemotron-rerank-vl-1b-v2",
     "perplexity/pplx-embed-context-v1-0.6b": "pplx-embed-context-v1-0-6b",
     "zhipuai/autoglm-phone-9b-multilingual": "autoglm-phone-9b-multilingual",
-    "alibaba/qwen3-coder-480b-a35b-instruct": "qwen3-coder-480b-a35b-instruct",
+    "alibaba/qwen3-coder-480b-a35b-instruct": "qwen3-coder",
     "google/text-multilingual-embedding-002": "text-multilingual-embedding-002",
     "mistral/mistral-small-3.1-24b-instruct": "mistral-small-3-1-24b-instruct",
     "mistral/mistral-small-3.2-24b-instruct": "mistral-small-3-2-24b-instruct",
     "nvidia/llama-3.1-nemotron-70b-instruct": "llama-3-1-nemotron-70b-instruct",
     "nvidia/llama-3.3-nemotron-super-49b-v1": "llama-3-3-nemotron-super-49b-v1",
-    "nvidia/nemotron-3.5-super-vl-120b-a12b": "nemotron-3-5-super-vl-120b-a12b",
+    "nvidia/nemotron-3.5-super-vl-120b-a12b": "nemotron-3-5-super-vl",
     "sentence-transformers/all-minilm-l6-v2": "all-minilm-l6-v2",
     "cohere/cohere-transcribe-arabic-07-2026": "cohere-transcribe-arabic-07-2026",
     "inclusionai/ming-image-0.1-design-layer": "ming-image-0-1-design-layer",
@@ -938,7 +938,7 @@
     "stabilityai/stable-diffusion-xl-base-1.0": "stable-diffusion-xl-base-1-0",
     "google/gemini-3.1-pro-preview-customtools": "gemini-3-1-pro-preview-customtools",
     "google/gemini-2.5-flash-lite-preview-06-17": "gemini-2-5-flash-lite-preview-06-17",
-    "mistral/mistral-small-3-1-24b-instruct-2503": "mistral-small-3-1-24b-instruct-2503",
+    "mistral/mistral-small-3-1-24b-instruct-2503": "mistral-small-3-1-24b-instruct",
     "nvidia/nemotron-content-safety-reasoning-4b": "nemotron-content-safety-reasoning-4b",
     "bytedance-seed/stable-diffusion-xl-lightning": "stable-diffusion-xl-lightning",
     "google/gemini-2.5-flash-lite-preview-09-2025": "gemini-2-5-flash-lite-preview-09-2025",
@@ -954,15 +954,284 @@
     "google/gemini-2.5-flash-native-audio-preview-12-2025": "gemini-2-5-flash-native-audio-preview-12-2025",
     "cognitivecomputations/dolphin-mistral-24b-venice-edition": "dolphin-mistral-24b-venice-edition"
   },
-  "conflicts": [],
-  "observedAt": "2026-11-22T11:21:21.063Z",
-  "extraFields": [],
+  "conflicts": [
+    {
+      "id": "qwen3-8-flash",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate",
+        "/openWeights",
+        "/specs/text/contextWindowTokens"
+      ]
+    },
+    {
+      "id": "deepseek-chat-v3-0324",
+      "fields": [
+        "/description",
+        "/weights",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "deepseek-chat-v3-1",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/contextWindowTokens",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "deepseek-v3-2",
+      "fields": [
+        "/name",
+        "/description",
+        "/knowledgeCutoff",
+        "/specs/text/contextWindowTokens",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "deepseek-chat",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate",
+        "/weights",
+        "/specs/text/contextWindowTokens",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "minimax-h3-image",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    },
+    {
+      "id": "minimax-m2-5",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "minimax-m2-7",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    },
+    {
+      "id": "devstral-2512",
+      "fields": [
+        "/name",
+        "/familyId",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "ministral-14b-2512",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "ministral-14b-2512",
+      "fields": [
+        "/name",
+        "/description",
+        "/modelLicense",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "ministral-3b-2512",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/contextWindowTokens",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "ministral-8b-2512",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "mistral-large-2512",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "mistral-medium-3-5",
+      "fields": [
+        "/description",
+        "/releaseDate",
+        "/modalities/input",
+        "/fileFormats/input",
+        "/openWeights",
+        "/specs/text/maxOutputTokens",
+        "/capabilities/topK"
+      ]
+    },
+    {
+      "id": "mistral-medium-3-5",
+      "fields": [
+        "/name"
+      ]
+    },
+    {
+      "id": "mistral-small-3-1-24b-instruct",
+      "fields": [
+        "/description",
+        "/knowledgeCutoff",
+        "/specs/text/maxOutputTokens",
+        "/capabilities/toolCalling"
+      ]
+    },
+    {
+      "id": "mistral-small-3-2-24b-instruct",
+      "fields": [
+        "/name",
+        "/modalities/input",
+        "/knowledgeCutoff",
+        "/specs/text/contextWindowTokens"
+      ]
+    },
+    {
+      "id": "mistral-small-2603",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    },
+    {
+      "id": "voxtral-small-24b-2507",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/contextWindowTokens",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "kimi-k2-thinking",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    },
+    {
+      "id": "kimi-k2-7-code",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    },
+    {
+      "id": "kimi-k2",
+      "fields": [
+        "/name",
+        "/description",
+        "/specs/text/maxOutputTokens"
+      ]
+    },
+    {
+      "id": "step-3-5-flash",
+      "fields": [
+        "/name",
+        "/description",
+        "/releaseDate"
+      ]
+    },
+    {
+      "id": "glm-4-7-flash",
+      "fields": [
+        "/name",
+        "/description"
+      ]
+    }
+  ],
+  "observedAt": "2026-11-22T16:14:10.390Z",
+  "extraFields": [
+    {
+      "field": "/parameters/totalBillions",
+      "modelId": "recursive-flint"
+    },
+    {
+      "field": "/parameters/activeBillions",
+      "modelId": "recursive-flint"
+    },
+    {
+      "field": "/architecture",
+      "modelId": "recursive-flint"
+    },
+    {
+      "field": "/parameters/totalBillions",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/architecture",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/specs/image/generation",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/specs/image/editing",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/specs/image/multiReference",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/specs/image/documentedSizes/0/widthPixels",
+      "modelId": "flux-2-klein-4b"
+    },
+    {
+      "field": "/specs/image/documentedSizes/0/heightPixels",
+      "modelId": "flux-2-klein-4b"
+    }
+  ],
   "extraModels": [],
   "behindLatest": false,
   "fieldCoverage": 1,
   "missingModels": [],
   "modelCoverage": 1,
-  "baselineCommit": "482544f6541fd88f0506b713fb85712ea6b8e99a",
+  "schemaVersion": 1,
+  "baselineCommit": "c8a34f75be8787d5589adaa81ea4bd8ad8dfc812",
   "totalFactCount": 19437,
   "unmappedFields": [],
   "coveredFactCount": 19437,
@@ -970,7 +1239,12 @@
   "supersetAchieved": false,
   "pendingWithdrawals": [],
   "upstreamModelCount": 952,
-  "latestCheckedCommit": "482544f6541fd88f0506b713fb85712ea6b8e99a",
-  "schemaVersion": 1,
-  "revision": 1
+  "latestCheckedCommit": "c8a34f75be8787d5589adaa81ea4bd8ad8dfc812",
+  "pendingFieldWithdrawals": [],
+  "revision": 2,
+  "lastCheckedAt": null,
+  "lastSuccessfulCheckAt": "2026-11-22T16:24:38.914Z",
+  "lastCheckStatus": "valid",
+  "unsupportedFields": [],
+  "baselineSupersetAchieved": false
 }
