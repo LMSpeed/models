@@ -55,7 +55,7 @@ jobs:
           git switch --detach "$RELEASE_COMMIT"
           pnpm install --frozen-lockfile
           pnpm exec tsx scripts/smoke.ts
-      - if: steps.control.outputs.mode == 'publish'
+      - if: steps.control.outputs.mode == 'publish' && contains(env.SDK_PUBLISH_ECOSYSTEMS, 'crates')
         id: crates-auth
         name: Obtain a short-lived crates.io publishing identity
         continue-on-error: true
