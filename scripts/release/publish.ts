@@ -23,15 +23,19 @@ type Release = {
   assets: Array<{ name: string }>;
 };
 type Manifest = {
+  manifestVersion: number;
   version: string;
   commit: string;
   schemaVersion: number;
   files: Record<string, string>;
 };
 const config = JSON.parse(await readFile('release.json', 'utf8')) as {
+  manifestVersion: number;
   version: string;
   schemaVersion: number;
 };
+if (config.manifestVersion !== 1)
+  throw new Error('Unsupported release manifest version');
 const tag = `sdk-v${config.version}`;
 const commit = run('git', ['rev-parse', 'HEAD']);
 const existing = api<Release[]>(
@@ -73,17 +77,10 @@ if (existing) {
       ]),
     ) as ReleaseState['ecosystems'],
   };
-  const priorTag = await fetch(
-    `https://api.github.com/repos/${repository}/git/ref/tags/${tag}`,
-    {
-      signal: AbortSignal.timeout(30000),
-      headers: {
-        'user-agent':
-          'LMSpeed-models-release (https://github.com/LMSpeed/models)',
-      },
-    },
+  const priorTags = api<Array<{ ref: string }>>(
+    `repos/${repository}/git/matching-refs/tags/${tag}`,
   );
-  if (priorTag.status !== 404)
+  if (priorTags.some((ref) => ref.ref === `refs/tags/${tag}`))
     throw new Error(
       'Release tag already exists without its immutable artifact manifest',
     );
@@ -110,6 +107,7 @@ if (existing) {
 }
 let state = stateFromBody(release.body);
 if (
+  manifest.manifestVersion !== config.manifestVersion ||
   manifest.version !== config.version ||
   manifest.commit !== state.commit ||
   manifest.schemaVersion !== state.schemaVersion ||
