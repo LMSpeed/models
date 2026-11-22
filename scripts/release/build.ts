@@ -4,12 +4,9 @@ import { run } from '../lib/process';
 
 const root = process.cwd();
 const config = JSON.parse(await readFile('release.json', 'utf8')) as {
-  manifestVersion: number;
   version: string;
   schemaVersion: number;
 };
-if (config.manifestVersion !== 1)
-  throw new Error('Unsupported release manifest version');
 const commit = run('git', ['rev-parse', 'HEAD']);
 await mkdir('.artifacts', { recursive: true });
 run('pnpm', ['--filter', '@lmspeed/models', 'build']);
@@ -101,7 +98,6 @@ await writeFile(
   '.artifacts/manifest.json',
   JSON.stringify(
     {
-      manifestVersion: config.manifestVersion,
       version: config.version,
       commit,
       schemaVersion: config.schemaVersion,

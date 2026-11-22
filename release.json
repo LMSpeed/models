@@ -1,6 +1,5 @@
 {
   "version": "0.1.0",
-  "manifestVersion": 1,
   "schemaVersion": 1,
   "repository": "LMSpeed/models",
   "workflow": "release-sdks.yml",

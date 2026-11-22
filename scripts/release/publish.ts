@@ -23,19 +23,15 @@ type Release = {
   assets: Array<{ name: string }>;
 };
 type Manifest = {
-  manifestVersion: number;
   version: string;
   commit: string;
   schemaVersion: number;
   files: Record<string, string>;
 };
 const config = JSON.parse(await readFile('release.json', 'utf8')) as {
-  manifestVersion: number;
   version: string;
   schemaVersion: number;
 };
-if (config.manifestVersion !== 1)
-  throw new Error('Unsupported release manifest version');
 const tag = `sdk-v${config.version}`;
 const commit = run('git', ['rev-parse', 'HEAD']);
 const existing = api<Release[]>(
@@ -107,7 +103,6 @@ if (existing) {
 }
 let state = stateFromBody(release.body);
 if (
-  manifest.manifestVersion !== config.manifestVersion ||
   manifest.version !== config.version ||
   manifest.commit !== state.commit ||
   manifest.schemaVersion !== state.schemaVersion ||
