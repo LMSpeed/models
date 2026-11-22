@@ -1,6 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import { api, run } from './lib/process';
-import { acceptsValidation, type ValidationRun } from './validated-run';
+import {
+  acceptsValidation,
+  nativeBotValidation,
+  type NativeValidationRun,
+  type ValidationRun,
+} from './validated-run';
 
 const event = JSON.parse(
   await readFile(process.env.GITHUB_EVENT_PATH ?? '', 'utf8'),
@@ -83,6 +88,55 @@ for (const candidate of prs) {
       result.head_branch,
     ]);
     continue;
+  }
+  if (automated) {
+    const native = nativeBotValidation(
+      api<{ workflow_runs: NativeValidationRun[] }>(
+        `repos/${repo}/actions/workflows/validate.yml/runs?event=pull_request&head_sha=${result.head_sha}&per_page=100`,
+      ).workflow_runs,
+      result,
+      repo,
+    );
+    if (!native)
+      throw new Error('No native PR validation exists for this bot head');
+    if (native.conclusion === 'action_required')
+      run('gh', [
+        'api',
+        `repos/${repo}/actions/runs/${native.id}/approve`,
+        '--method',
+        'POST',
+      ]);
+    if (
+      native.status !== 'completed' ||
+      native.conclusion === 'action_required'
+    )
+      process.stdout.write(
+        `${run(
+          'gh',
+          [
+            'run',
+            'watch',
+            String(native.id),
+            '--repo',
+            repo,
+            '--exit-status',
+            '--interval',
+            '10',
+          ],
+          { timeout: 8 * 60 * 1000 },
+        )}\n`,
+      );
+    const checked = api<ValidationRun>(
+      `repos/${repo}/actions/runs/${native.id}`,
+    );
+    if (
+      !acceptsValidation(checked, repo) ||
+      checked.head_sha !== result.head_sha
+    )
+      throw new Error('Native PR validation did not pass on the expected head');
+    const current = api<typeof candidate>(`repos/${repo}/pulls/${pr.number}`);
+    if (current.head.sha !== result.head_sha)
+      throw new Error('PR changed while native validation was running');
   }
   const merged = api<{ merged: boolean }>(
     `repos/${repo}/pulls/${pr.number}/merge`,
