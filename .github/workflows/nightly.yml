@@ -9,6 +9,9 @@ env:
   SDK_PUBLISH_ECOSYSTEMS: ${{ vars.SDK_PUBLISH_ECOSYSTEMS || 'npm,pypi,crates,go' }}
 jobs:
   regression:
+    permissions:
+      contents: read
+      actions: write
     uses: ./.github/workflows/validate.yml
   synchronize:
     permissions:
