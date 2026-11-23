@@ -10,7 +10,7 @@ homepage = "https://models.lmspeed.net"
 [dependencies]
 serde = { version = "=1.0.228", features = ["derive"] }
 serde_json = "=1.0.145"
-reqwest = { version = "=0.12.24", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "=0.12.28", default-features = false, features = ["json", "rustls-tls"] }
 jsonschema = { version = "=0.33.0", default-features = false }
 serde_jcs = "=0.3.0"
 sha2 = "=0.10.9"
