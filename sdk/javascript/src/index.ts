@@ -192,7 +192,7 @@ export class Client {
     path: string,
     signal?: AbortSignal,
     headers: Record<string, string> = {},
-  ): Promise<Response> {
+  ): Promise<{ status: number; headers: Headers; body: string }> {
     try {
       const response = await fetch(`${this.baseUrl}${path}`, {
         headers,
@@ -201,13 +201,16 @@ export class Client {
           ...(signal ? [signal] : []),
         ]),
       });
-      if (response.status === 304) return response;
-      if (!response.ok)
+      if (response.status !== 304 && !response.ok)
         throw new ModelsError(
           response.status === 404 ? 'not_found' : 'network',
           `HTTP ${response.status}`,
         );
-      return response;
+      return {
+        status: response.status,
+        headers: response.headers,
+        body: response.status === 304 ? '' : await response.text(),
+      };
     } catch (error) {
       if (error instanceof ModelsError) throw error;
       if (signal?.aborted)
@@ -236,10 +239,7 @@ export class Client {
         );
       return this.catalogue;
     }
-    const candidate = await Catalog.fromJson(
-      await response.text(),
-      this.baseUrl,
-    );
+    const candidate = await Catalog.fromJson(response.body, this.baseUrl);
     if (
       this.catalogue &&
       (candidate.revision < this.catalogue.revision ||
@@ -269,7 +269,7 @@ export class Client {
     const response = await this.request('/logos.json', signal);
     let logos: LogoIndex;
     try {
-      logos = (await response.json()) as LogoIndex;
+      logos = JSON.parse(response.body) as LogoIndex;
     } catch {
       throw new ModelsError('invalid_json', 'Logo metadata is not valid JSON');
     }
@@ -280,7 +280,7 @@ export class Client {
     const response = await this.request('/coverage/models-dev.json', signal);
     let data: Record<string, unknown>;
     try {
-      data = (await response.json()) as Record<string, unknown>;
+      data = JSON.parse(response.body) as Record<string, unknown>;
     } catch {
       throw new ModelsError(
         'invalid_json',

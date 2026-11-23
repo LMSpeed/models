@@ -1,0 +1,4 @@
+{
+  "type": "patch",
+  "summary": "Recognize timeouts and cancellations while downloading model data, logo details or coverage, and keep the last usable catalogue."
+}

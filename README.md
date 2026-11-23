@@ -8,7 +8,7 @@ An open, source-attributed database of AI model specifications, maintained in LM
 
 **Package status:** registry publication is in progress. Python and Rust publication are explicitly deferred; their clients and contract checks remain included in CI. The immutable release manifest records each registry separately.
 
-The production endpoint is **https://models.lmspeed.net**, serving data revision **2** with **925 canonical models** and **120 developers**. Deployment and package publication are tracked by Actions and the release manifests. SDK versions are independent of the data `revision`.
+The production endpoint is **https://models.lmspeed.net**. Its [deployment record](https://models.lmspeed.net/deployment.json) identifies the currently served commit, data revision and hash. Deployment and package publication are tracked by Actions and the release manifests. SDK versions are independent of the data `revision`.
 
 ```sh
 curl https://models.lmspeed.net/v1/api.json
@@ -93,7 +93,7 @@ Unspecified sources resolve exact canonical IDs first, then confirmed global ali
 
 models.dev enrichment enters LMSpeed before export. Scheduled source and distribution checks run every six hours. An optional cross-repository dispatch credential can shorten distribution latency; the scheduled chain works independently. Unknown upstream fields, incomplete snapshots, hash mismatches or suspicious deletions preserve the previous valid version. Coverage is measured against the complete fixed model-body baseline, including every model type; price, host API and benchmark fields are explicitly excluded.
 
-Automatic source synchronization is currently blocked by the source site's Cloudflare Bot Fight Mode. The previously validated snapshot remains available; automated updates are not claimed operational until the source requests pass and a complete update has been verified.
+The source import and cross-repository synchronization have published revision 3 through the scheduled workflow implementation. Source requests retain Admin API-key authentication; Cloudflare WAF and rate limiting stay enabled. A failed import preserves the last published snapshot, and a subsequent bounded run can resume from a completed import receipt.
 
 To pin data, choose a Git commit or data tag and reconstruct its local snapshot with `scripts/sync-lib.ts`, then load that JSON in any client. SDK packages do not contain a complete data snapshot. The same commit builds offline after its public locked dependencies are installed. Astro output is static; the deployed Worker contains only Static Assets, with no database, server adapter or custom request handler.
 
@@ -103,7 +103,7 @@ GitHub Actions uses its repository-scoped token. Bot-created data and version PR
 
 Dispatched workflow checks do not satisfy GitHub's required PR checks. For its own bot-created PR and exact validated head only, the default-branch continuation starts the approval-gated native PR validation and waits up to eight minutes for its real result. It rechecks the head before merging. Native checks and branch protections stay enabled; failed checks preserve the open PR. Continuations use independent run identities so unrelated dependency checks cannot cancel a pending model release.
 
-Cloudflare Workers Builds connects `LMSpeed/models` on `main`. Its build command is `pnpm build:site`, production command is `pnpm deploy:site`, and branch previews use `pnpm deploy:preview`. Alchemy deploys the prebuilt Astro directory as an assets-only Worker, verifies a preview, then uploads the same bytes to production. No server entrypoint, runtime binding or SSR adapter is present. GitHub Actions verifies the exact published commit and data revision rather than deploying a second copy. Failed production smoke checks restore the previous Cloudflare version.
+Cloudflare Workers Builds connects `LMSpeed/models` on `main`. Its build command is `pnpm build:site` and production command is `pnpm deploy:site`; feature-branch builds are disabled. Alchemy deploys the prebuilt Astro directory as an assets-only Worker, verifies a preview, then uploads the same bytes to production. `pnpm deploy:preview` also supports an explicit preview-only deployment. No server entrypoint, runtime binding or SSR adapter is present. GitHub Actions verifies the exact published commit and data revision rather than deploying a second copy. Failed production smoke checks restore the previous Cloudflare version.
 
 `alchemy.run.ts` names only the two site Workers. On ephemeral build hosts it reads and adopts those resources from Cloudflare; local Alchemy state is ignored by Git and is not required for recovery. Deployment history is retained by Cloudflare, and the deployed `deployment.json` identifies the source commit and data hash. No account-wide state Worker is modified.
 

@@ -10,6 +10,7 @@ import {
   pythonVersion,
   type ReleaseState,
   releaseComplete,
+  releaseUpdate,
   stateFromBody,
 } from './state';
 import { verifyInstall } from './verify-install';
@@ -73,17 +74,10 @@ if (existing) {
       ]),
     ) as ReleaseState['ecosystems'],
   };
-  const priorTag = await fetch(
-    `https://api.github.com/repos/${repository}/git/ref/tags/${tag}`,
-    {
-      signal: AbortSignal.timeout(30000),
-      headers: {
-        'user-agent':
-          'LMSpeed-models-release (https://github.com/LMSpeed/models)',
-      },
-    },
+  const priorTags = api<Array<{ ref: string }>>(
+    `repos/${repository}/git/matching-refs/tags/${tag}`,
   );
-  if (priorTag.status !== 404)
+  if (priorTags.some((ref) => ref.ref === `refs/tags/${tag}`))
     throw new Error(
       'Release tag already exists without its immutable artifact manifest',
     );
@@ -144,7 +138,7 @@ const save = () => {
   release = api<Release>(
     `repos/${repository}/releases/${release.id}`,
     'PATCH',
-    { body: bodyWithState(notes, state), draft: !releaseComplete(state) },
+    releaseUpdate(notes, state),
   );
 };
 async function remote(path: string): Promise<unknown | undefined> {
