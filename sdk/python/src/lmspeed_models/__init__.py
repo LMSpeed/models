@@ -12,7 +12,7 @@ import jsonschema
 import rfc8785
 from .types import Snapshot, ModelValue as Model, SourceElement, ModelsDev
 from .codec import decode
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 DEFAULT_URL = "https://models.lmspeed.net"
 class ModelsError(Exception):
     def __init__(self, code: str, message: str, candidates: list[str] | None = None):

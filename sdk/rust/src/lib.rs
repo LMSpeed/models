@@ -5,7 +5,7 @@ use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeSet, fmt, sync::OnceLock, time::Duration};
 pub use types::{ModelValue as Model, Snapshot};
-pub const VERSION: &str = "0.1.0";
+pub const VERSION: &str = "0.1.1";
 pub const DEFAULT_URL: &str = "https://models.lmspeed.net";
 #[derive(Debug, Clone)]
 pub struct ModelsError {

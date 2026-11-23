@@ -11,7 +11,7 @@ export type {
   Resolution,
   Snapshot,
 } from '../../../packages/core/src/index';
-export const SDK_VERSION = '0.1.0';
+export const SDK_VERSION = '0.1.1';
 export type ErrorCode =
   | 'not_found'
   | 'ambiguous'
