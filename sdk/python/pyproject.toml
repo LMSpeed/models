@@ -3,7 +3,7 @@ requires = ["hatchling==1.27.0"]
 build-backend = "hatchling.build"
 [project]
 name = "lmspeed-models"
-version = "0.1.0"
+version = "0.1.1"
 description = "Source-attributed model specifications, stable aliases and logos"
 requires-python = ">=3.10"
 license = "MIT"

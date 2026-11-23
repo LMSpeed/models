@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "schemaVersion": 1,
   "repository": "LMSpeed/models",
   "workflow": "release-sdks.yml",
@@ -7,5 +7,5 @@
   "pypi": "lmspeed-models",
   "crates": "lmspeed-models",
   "go": "github.com/lmspeed/models/sdk/go",
-  "changeSet": "378662d19f40189c8f6ac87ce5afb2865f636bd0029bc93c1d58f561eaf633ee"
+  "changeSet": "0a561a3228af6da2423093779750f3dc295b85781af90f62a316c876a6ba5475"
 }

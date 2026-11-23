@@ -22,7 +22,7 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v6"
 )
 
-const Version = "0.1.0"
+const Version = "0.1.1"
 const DefaultURL = "https://models.lmspeed.net"
 
 //go:embed schema.json
